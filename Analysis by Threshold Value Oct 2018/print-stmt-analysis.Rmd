@@ -1,0 +1,415 @@
+# print-stmt-analysis.Rmd
+
+```{r echo=TRUE}
+library(data.table)
+library(dplyr)
+library(bit64)
+library(plyr)
+
+# Reading `print-stmt.csv` file into datatable
+print_stmt <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/print-stmt.csv")
+```
+
+# List of random `userId`s: [1st Iteration] 100 136 107 124 155  92  85  43 118  16   1  73
+# [2nd Iteration] 168  18  81 118  83 159   1  53  56  12 125  85
+# We started with the random `userId`s from our 1st Iteration. Whenever we found empty rows for a particular `userId` of 1st Iteration, we used a different `userId` from the 2nd Iteration.
+# The above random numbers are achieved by the following command:
+
+``` {r echo=TRUE}
+# Randomizing 12 sample
+sample(1:169, 12, replace = FALSE) 
+```
+
+# We assign 3 samples per projects:
+# The final list is as following:
+# CASSIGNMENTNAME userId 
+# Project 1: 100 (tomf) 18 (jstinf) 107 (alexlamb)
+# Project 2: 124 (zshuai8) 155 (jep12444) 92 (jason95)
+# Project 3: 56 (tkenny)  43 (bcarly) 81 (rudy3)
+# Project 4: 12 (nabil96)   1 (shuvesta)  85 (mattb2)
+
+``` {r echo=TRUE}
+# Project 1
+print_stmt_project_1_a <- filter(print_stmt, print_stmt$userId == 'tomf' & print_stmt$CASSIGNMENTNAME == 'Project 1')
+print_stmt_project_1_b <- filter(print_stmt, print_stmt$userId == 'jstinf' & print_stmt$CASSIGNMENTNAME == 'Project 1') # Re-sampled
+print_stmt_project_1_c <- filter(print_stmt, print_stmt$userId == 'alexlamb' & print_stmt$CASSIGNMENTNAME == 'Project 1')
+
+# Project 2
+print_stmt_project_2_a <- filter(print_stmt, print_stmt$userId == 'zshuai8' & print_stmt$CASSIGNMENTNAME == 'Project 2')
+print_stmt_project_2_b <- filter(print_stmt, print_stmt$userId == 'jep12444' & print_stmt$CASSIGNMENTNAME == 'Project 2') 
+print_stmt_project_2_c <- filter(print_stmt, print_stmt$userId == 'jason95' & print_stmt$CASSIGNMENTNAME == 'Project 2')
+
+# Project 3
+print_stmt_project_3_a <- filter(print_stmt, print_stmt$userId == 'tkenny' & print_stmt$CASSIGNMENTNAME == 'Project 3') # Re-sampled
+print_stmt_project_3_b <- filter(print_stmt, print_stmt$userId == 'bcarly' & print_stmt$CASSIGNMENTNAME == 'Project 3') 
+print_stmt_project_3_c <- filter(print_stmt, print_stmt$userId == 'rudy3' & print_stmt$CASSIGNMENTNAME == 'Project 3') # Re-sampled
+
+# Project 4
+print_stmt_project_4_a <- filter(print_stmt, print_stmt$userId == 'nabil96' & print_stmt$CASSIGNMENTNAME == 'Project 4') # Re-sampled
+print_stmt_project_4_b <- filter(print_stmt, print_stmt$userId == 'shuvesta' & print_stmt$CASSIGNMENTNAME == 'Project 4') 
+print_stmt_project_4_c <- filter(print_stmt, print_stmt$userId == 'mattb2' & print_stmt$CASSIGNMENTNAME == 'Project 4') # Re-sampled
+
+```
+
+# Outputting the Samples in CSV files
+
+``` {r echo=TRUE}
+# Project 1
+write.csv(print_stmt_project_1_a, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_1_sample_1.csv", row.names = FALSE)
+write.csv(print_stmt_project_1_b, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_1_sample_2.csv", row.names = FALSE)
+write.csv(print_stmt_project_1_c, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_1_sample_3.csv", row.names = FALSE)
+
+
+# Project 2
+write.csv(print_stmt_project_2_a, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_2_sample_1.csv", row.names = FALSE)
+write.csv(print_stmt_project_2_b, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_2_sample_2.csv", row.names = FALSE)
+write.csv(print_stmt_project_2_c, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_2_sample_3.csv", row.names = FALSE)
+
+
+# Project 3
+write.csv(print_stmt_project_3_a, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_3_sample_1.csv", row.names = FALSE)
+write.csv(print_stmt_project_3_b, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_3_sample_2.csv", row.names = FALSE)
+write.csv(print_stmt_project_3_c, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_3_sample_3.csv", row.names = FALSE)
+
+
+# Project 4
+write.csv(print_stmt_project_4_a, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_4_sample_1.csv", row.names = FALSE)
+write.csv(print_stmt_project_4_b, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_4_sample_2.csv", row.names = FALSE)
+write.csv(print_stmt_project_4_c, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/DPS 12 Samples (3 per project)/Project_4_sample_3.csv", row.names = FALSE)
+
+```
+
+# Getting the summary (mean, median, std) of the DPS for each of the 4 projects
+```{r echo=TRUE}
+
+# Project 1
+print_stmt_project_1 <- filter(print_stmt, print_stmt$CASSIGNMENTNAME == "Project 1")
+
+proj_1_counts <- count(print_stmt_project_1, c("userId", "Subtype"))
+
+# Project 2
+
+print_stmt_project_2 <- filter(print_stmt, print_stmt$CASSIGNMENTNAME == "Project 2")
+
+proj_2_counts <- count(print_stmt_project_2, c("userId", "Subtype"))
+
+# Project 3
+
+print_stmt_project_3 <- filter(print_stmt, print_stmt$CASSIGNMENTNAME == "Project 3")
+
+proj_3_counts <- count(print_stmt_project_3, c("userId", "Subtype"))
+
+# Project 4
+
+print_stmt_project_4 <- filter(print_stmt, print_stmt$CASSIGNMENTNAME == "Project 4")
+
+proj_4_counts <- count(print_stmt_project_4, c("userId", "Subtype"))
+
+# An interesting observation, some students have `Temporary` print statements but no `Final` print statement. Such as, for `Project 1` the student with the PID `taylorr7`
+
+# Check out "taylorr7"'s submission for Project 1
+View(filter(print_stmt_project_1, print_stmt_project_1$userId == "taylorr7"))
+
+```
+
+##################	
+# = Findings (based on the following chunck of r code) #: #
+##################
+	- Total projects: 435
+	- Projects w/ score higher than threshold: 367 (84.37%)
+	- Projects w/ ZERO score: 18 (4.14%)
+	- Projects w/ score lower than threshold but not 0 (zero) : 50 (11.49%)
+
+	(by unique composite key of `userId` and `CASSIGNMENTNAME` (assignment)) 	
+	(threshold score = 0.50)
+
+	(NB: The following results do NOT contain any value from projects w/ a ZERO score)
+
+	- Total print statements (both DPS and Non_DPS, for all projects): 44656
+	- Total print statements (both DPS and Non_DPS, for projects w/ high score): 26319 (58.94%)
+	- Total print statements (both DPS and Non_DPS, for projects w/ low score): 18337 (41.06%)
+	- Total DPS: 18657
+	- # of DPS (for projects w/ high score): 10514 (56.35%)
+	- # of DPS (for projects w/ low score): 8143 (43.65%)
+
+ - For high scoring projects:
+ 	- Project 1:
+		- Total print statements (both DPS and Non_DPS): 9461
+			- DPS: 4007 (42.35%)
+			- Non_DPS: 5454 (57.65%)
+ 	- Project 2:
+		- Total print statements (both DPS and Non_DPS): 9146
+			- DPS: 2534 (27.71%)
+			- Non_DPS: 6612 (72.29%)
+ 	- Project 3:
+		- Total print statements (both DPS and Non_DPS): 3439
+			- DPS: 2694 (78.34%)
+			- Non_DPS: 745 (21.66%)
+ 	- Project 4:
+		- Total print statements (both DPS and Non_DPS): 4273
+			- DPS: 1279 (29.93%)
+			- Non_DPS: 2994 (70.07%)
+
+ - For low scoring projects:
+ 	- Project 1:
+		- Total print statements (both DPS and Non_DPS): 1937
+			- DPS: 934 (48.22%)
+			- Non_DPS: 1003 (51.78%)
+ 	- Project 2:
+		- Total print statements (both DPS and Non_DPS): 10519
+			- DPS: 5141 (48.87%)
+			- Non_DPS: 5378 (51.13%)
+ 	- Project 3:
+		- Total print statements (both DPS and Non_DPS): 1203
+			- DPS: 958 (79.63%)
+			- Non_DPS: 245 (20.37%)
+ 	- Project 4:
+		- Total print statements (both DPS and Non_DPS): 3256
+			- DPS: 1110 (34.09%)
+			- Non_DPS: 2146 (65.91%)
+			
+# Some observations:
+ # As for the score, I am considering the final "Estimate of problem coverage (from Web-CAT testcases)" values for each project. 
+ # I am setting the threshold value for the score to 0.50, i.e. 50%
+ # A total of 367 projects (84.37%) got equal or higher than 50% score, 50 projects (11.49%) got lower than 50%, and 18 projects (4.14%) got a ZERO
+ # I am discarding any projects that have a ZERO value as the score for further analysis
+ # 50 projects (11.49%), the projects w/ low score, contain 43.65% of the total DPS
+ # For the Project 3, both in the projects w/ high scores and the projects w/ low scores have high percentile of DPS: 78.34% and 79.63%, respectively.
+ 	 - Possible reason, for Project 3, the students do not have specific print statements to output. 
+ 	 - Many of the DPS for Project 3 may be the result of students showing their progress. Hence, these print statements might have been falsely classified as DPS. 
+ 	 - Any other approach for classifying print statements for Project 3? 
+
+ Ayaan - Hey Ri -- Good observation about Project 3. The lack of stdout requirements could have driven up the number of diagnostic print statements. The most likely reason I can think of is that students used the required output for some debugging in the other projects. But I don't think this means they were "falsely classified". Please put in usage percentages in the poster proposal.
+
+```{r echo=TRUE}
+
+### Debugging for the python script `print-stmt-dps-classify.py`
+
+print_stmt_high_score <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_high_score.csv")
+
+print_stmt_modified <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_modified.csv")
+
+print_stmt_list <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_list.csv")
+
+unique_print_stmt <- unique(print_stmt_list$PrintStatements)
+
+#######
+# Calculating the statistical findings: 
+#### Project 1
+proj_1_print_stmt_list_high <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/Project 1_print_stmt_list_high.csv")
+nrow(proj_1_print_stmt_list_high)
+
+proj_1_print_stmt_list_low <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/Project 1_print_stmt_list_low.csv")
+nrow(proj_1_print_stmt_list_low)
+
+# High
+# Project 1 DPS
+proj_1_high_dps <- filter(proj_1_print_stmt_list_high, proj_1_print_stmt_list_high$DPS == 1) 
+nrow(proj_1_high_dps)
+
+# Project 1 Non_DPS
+proj_1_high_ndps <- filter(proj_1_print_stmt_list_high, proj_1_print_stmt_list_high$DPS == 0) 
+nrow(proj_1_high_ndps)
+
+# Low
+# Project 1 DPS
+proj_1_low_dps <- filter(proj_1_print_stmt_list_low, proj_1_print_stmt_list_low$DPS == 1) 
+nrow(proj_1_low_dps)
+
+# Project 1 Non_DPS
+proj_1_low_ndps <- filter(proj_1_print_stmt_list_low, proj_1_print_stmt_list_low$DPS == 0) 
+nrow(proj_1_low_ndps)
+
+
+#### Project 2
+proj_2_print_stmt_list_high <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/Project 2_print_stmt_list_high.csv")
+nrow(proj_2_print_stmt_list_high)
+
+proj_2_print_stmt_list_low <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/Project 2_print_stmt_list_low.csv")
+nrow(proj_2_print_stmt_list_low)
+
+# High
+# Project 2 DPS
+proj_2_high_dps <- filter(proj_2_print_stmt_list_high, proj_2_print_stmt_list_high$DPS == 1) 
+nrow(proj_2_high_dps)
+
+# Project 2 Non_DPS
+proj_2_high_ndps <- filter(proj_2_print_stmt_list_high, proj_2_print_stmt_list_high$DPS == 0) 
+nrow(proj_2_high_ndps)
+
+# Low
+# Project 2 DPS
+proj_2_low_dps <- filter(proj_2_print_stmt_list_low, proj_2_print_stmt_list_low$DPS == 1)
+
+nrow(proj_2_low_dps)
+
+# Project 2 Non_DPS
+proj_2_low_ndps <- filter(proj_2_print_stmt_list_low, proj_2_print_stmt_list_low$DPS == 0) 
+nrow(proj_2_low_ndps)
+
+#### Project 3
+proj_3_print_stmt_list_high <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/Project 3_print_stmt_list_high.csv")
+nrow(proj_3_print_stmt_list_high)
+
+proj_3_print_stmt_list_low <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/Project 3_print_stmt_list_low.csv")
+nrow(proj_3_print_stmt_list_low)
+
+# High
+# Project 3 DPS
+proj_3_high_dps <- filter(proj_3_print_stmt_list_high, proj_3_print_stmt_list_high$DPS == 1) 
+nrow(proj_3_high_dps)
+
+# Project 3 Non_DPS
+proj_3_high_ndps <- filter(proj_3_print_stmt_list_high, proj_3_print_stmt_list_high$DPS == 0) 
+nrow(proj_3_high_ndps)
+
+# Low
+# Project 3 DPS
+proj_3_low_dps <- filter(proj_3_print_stmt_list_low, proj_3_print_stmt_list_low$DPS == 1) 
+nrow(proj_3_low_dps)
+
+
+# Project 3 Non_DPS
+proj_3_low_ndps <- filter(proj_3_print_stmt_list_low, proj_3_print_stmt_list_low$DPS == 0) 
+nrow(proj_3_low_ndps)
+
+
+#### Project 4
+proj_4_print_stmt_list_high <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/Project 4_print_stmt_list_high.csv")
+nrow(proj_4_print_stmt_list_high)
+
+proj_4_print_stmt_list_low <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/Project 4_print_stmt_list_low.csv")
+nrow(proj_4_print_stmt_list_low)
+
+# High
+# Project 4 DPS
+proj_4_high_dps <- filter(proj_4_print_stmt_list_high, proj_4_print_stmt_list_high$DPS == 1) 
+nrow(proj_4_high_dps)
+
+# Project 4 Non_DPS
+proj_4_high_ndps <- filter(proj_4_print_stmt_list_high, proj_4_print_stmt_list_high$DPS == 0) 
+nrow(proj_4_high_ndps)
+
+# Low
+# Project 4 DPS
+proj_4_low_dps <- filter(proj_4_print_stmt_list_low, proj_4_print_stmt_list_low$DPS == 1) 
+nrow(proj_4_low_dps)
+
+
+# Project 4 Non_DPS
+proj_4_low_ndps <- filter(proj_4_print_stmt_list_low, proj_4_print_stmt_list_low$DPS == 0) 
+nrow(proj_4_low_ndps)
+
+##################
+
+print_stmt_high_score <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_high_score.csv")
+
+print_stmt_low_score <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_low_score.csv")
+
+zero_projects <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/zero_projects.csv")
+
+##################
+# Calculating the portion of students using DPS
+# For proj_1_print_stmt_list_high
+only_dps <- filter(proj_1_print_stmt_list_high, proj_1_print_stmt_list_high$DPS == 1)
+stds_using_dps <- unique(only_dps$userId)
+# For proj_1_print_stmt_list_low
+only_dps <- filter(proj_1_print_stmt_list_low, proj_1_print_stmt_list_low$DPS == 1)
+stds_using_dps <- unique(append(stds_using_dps, unique(only_dps$userId)))
+# For proj_2_print_stmt_list_high
+only_dps <- filter(proj_2_print_stmt_list_high, proj_2_print_stmt_list_high$DPS == 1)
+stds_using_dps <- unique(append(stds_using_dps, unique(only_dps$userId)))
+# For proj_2_print_stmt_list_low
+only_dps <- filter(proj_2_print_stmt_list_low, proj_2_print_stmt_list_low$DPS == 1)
+stds_using_dps <- unique(append(stds_using_dps, unique(only_dps$userId)))
+# For proj_3_print_stmt_list_high
+only_dps <- filter(proj_3_print_stmt_list_high, proj_3_print_stmt_list_high$DPS == 1)
+stds_using_dps <- unique(append(stds_using_dps, unique(only_dps$userId)))
+# For proj_3_print_stmt_list_low
+only_dps <- filter(proj_3_print_stmt_list_low, proj_3_print_stmt_list_low$DPS == 1)
+stds_using_dps <- unique(append(stds_using_dps, unique(only_dps$userId)))
+# For proj_4_print_stmt_list_high
+only_dps <- filter(proj_4_print_stmt_list_high, proj_4_print_stmt_list_high$DPS == 1)
+stds_using_dps <- unique(append(stds_using_dps, unique(only_dps$userId)))
+# For proj_4_print_stmt_list_low
+only_dps <- filter(proj_4_print_stmt_list_low, proj_4_print_stmt_list_low$DPS == 1)
+stds_using_dps <- unique(append(stds_using_dps, unique(only_dps$userId)))
+
+# Total number of students 
+total_students <- unique(print_stmt_modified$userId)
+
+```
+
+# Further debugging
+``` {r echo=TRUE}
+### Calculating DPS per projects
+# High scoring projects
+proj_1_high_dps_count_per_std <- count(proj_1_high_dps, c('userId', 'CASSIGNMENTNAME'))
+proj_2_high_dps_count_per_std <- count(proj_2_high_dps, c('userId', 'CASSIGNMENTNAME'))
+proj_3_high_dps_count_per_std <- count(proj_3_high_dps, c('userId', 'CASSIGNMENTNAME'))
+proj_4_high_dps_count_per_std <- count(proj_4_high_dps, c('userId', 'CASSIGNMENTNAME'))
+
+View(proj_1_high_dps_count_per_std)
+View(proj_2_high_dps_count_per_std)
+View(proj_3_high_dps_count_per_std)
+View(proj_4_high_dps_count_per_std)
+
+summary(proj_1_high_dps_count_per_std)
+summary(proj_2_high_dps_count_per_std)
+summary(proj_3_high_dps_count_per_std)
+summary(proj_4_high_dps_count_per_std)
+
+write.csv(proj_1_high_dps_count_per_std, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Hypothesis Test on DPS of High_Low projects/proj_2_high_dps_count_per_std.csv", row.names = FALSE)
+
+write.csv(proj_2_high_dps_count_per_std, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Hypothesis Test on DPS of High_Low projects/proj_2_high_dps_count_per_std.csv", row.names = FALSE)
+
+write.csv(proj_3_high_dps_count_per_std, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Hypothesis Test on DPS of High_Low projects/proj_3_high_dps_count_per_std.csv", row.names = FALSE)
+
+write.csv(proj_4_high_dps_count_per_std, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Hypothesis Test on DPS of High_Low projects/proj_4_high_dps_count_per_std.csv", row.names = FALSE)
+
+# Low scoring projects
+proj_1_low_dps_count_per_std <- count(proj_1_low_dps, c('userId', 'CASSIGNMENTNAME'))
+proj_2_low_dps_count_per_std <- count(proj_2_low_dps, c('userId', 'CASSIGNMENTNAME'))
+proj_3_low_dps_count_per_std <- count(proj_3_low_dps, c('userId', 'CASSIGNMENTNAME'))
+proj_4_low_dps_count_per_std <- count(proj_4_low_dps, c('userId', 'CASSIGNMENTNAME'))
+
+View(proj_1_low_dps_count_per_std)
+View(proj_2_low_dps_count_per_std)
+View(proj_3_low_dps_count_per_std)
+View(proj_4_low_dps_count_per_std)
+
+summary(proj_1_low_dps_count_per_std)
+summary(proj_2_low_dps_count_per_std)
+summary(proj_3_low_dps_count_per_std)
+summary(proj_4_low_dps_count_per_std)
+
+write.csv(proj_1_low_dps_count_per_std, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Hypothesis Test on DPS of High_Low projects/proj_1_low_dps_count_per_std.csv", row.names = FALSE)
+
+write.csv(proj_2_low_dps_count_per_std, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Hypothesis Test on DPS of High_Low projects/proj_2_low_dps_count_per_std.csv", row.names = FALSE)
+
+write.csv(proj_3_low_dps_count_per_std, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Hypothesis Test on DPS of High_Low projects/proj_3_low_dps_count_per_std.csv", row.names = FALSE)
+
+write.csv(proj_4_low_dps_count_per_std, file="/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Hypothesis Test on DPS of High_Low projects/proj_4_low_dps_count_per_std.csv", row.names = FALSE)
+
+### t test on DPS count per project of high vs low
+
+# Project 1
+t.test(proj_1_high_dps_count_per_std$freq, proj_1_low_dps_count_per_std$freq)
+# Project 2
+t.test(proj_2_high_dps_count_per_std$freq, proj_2_low_dps_count_per_std$freq)
+# Project 2
+t.test(proj_3_high_dps_count_per_std$freq, proj_3_low_dps_count_per_std$freq)
+# Project 2
+t.test(proj_4_high_dps_count_per_std$freq, proj_4_low_dps_count_per_std$freq)
+
+
+View(proj_2_high_dps_count_per_std[order(-proj_2_high_dps_count_per_std$freq),])
+View(proj_2_low_dps_count_per_std[order(-proj_2_low_dps_count_per_std$freq),])
+```
+
+``` {recho=TRUE}
+web_cat <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/Sensor Data (Raw)/fall-2016/web-cat-students-with-sensordata.csv")
+
+# View(filter(web_cat, web_cat$userName == 'davidja'))
+
+```

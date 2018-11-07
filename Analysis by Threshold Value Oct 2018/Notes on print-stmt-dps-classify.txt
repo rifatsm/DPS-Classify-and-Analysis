@@ -1,0 +1,16 @@
+Notes on print-stmt-dps-classify.txt
+
+ # Python Script `print-stmt-dps-classify.py`
+ 	- About: 
+ 		- The script classifies projects into two categories, high and low scoring projects.
+ 		- This classification is achieved by using a threshold score, which is initially set to 50% of the total score
+ 	- Pros:
+ 		- 
+ 	- Cons: 
+ 		- The threshold value is problematic. 
+ 		- We rather need to use dynamic values such as quartile values of all the scores for each of the projects 
+ 	- How to Use: 
+ 		- Run Step 1
+ 		- Run Step 2 
+
+ # R Script `print-stmt-analysis.Rmd`

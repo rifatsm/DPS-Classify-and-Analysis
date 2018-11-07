@@ -1,0 +1,52 @@
+# Project 1
+
+	Welch Two Sample t-test
+
+data:  proj_1_high_dps_count_per_std$freq and proj_1_low_dps_count_per_std$freq
+t = 0.57726, df = 28.177, p-value = 0.5683
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -22.80714  40.71270
+sample estimates:
+mean of x mean of y 
+ 55.65278  46.70000 
+
+
+# Project 2
+
+	Welch Two Sample t-test
+
+data:  proj_2_high_dps_count_per_std$freq and proj_2_low_dps_count_per_std$freq
+t = -2.8961, df = 44.868, p-value = 0.00582
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -147.4826  -26.4854
+sample estimates:
+mean of x mean of y 
+ 41.54098 128.52500 
+
+# Project 3
+
+	Welch Two Sample t-test
+
+data:  proj_3_high_dps_count_per_std$freq and proj_3_low_dps_count_per_std$freq
+t = 0.9548, df = 80.988, p-value = 0.3425
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -13.68484  38.93617
+sample estimates:
+mean of x mean of y 
+ 48.10714  35.48148 
+
+# Project 4
+
+	Welch Two Sample t-test
+
+data:  proj_4_high_dps_count_per_std$freq and proj_4_low_dps_count_per_std$freq
+t = -0.20558, df = 61.614, p-value = 0.8378
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -23.54812  19.15682
+sample estimates:
+mean of x mean of y 
+ 27.80435  30.00000 
