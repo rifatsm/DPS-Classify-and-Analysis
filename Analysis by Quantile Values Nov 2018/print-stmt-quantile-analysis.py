@@ -10,7 +10,7 @@ import pandas as pd
 # Reading the CSV file containing all the print statements
 print "Initiating `print-stmt-quantile-analysis` script:"
 print "Reading print_stmt..."
-print_stmt = pd.read_csv("/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/print-stmt all versions/Oct 22, 2018/print-stmt.csv")
+print_stmt = pd.read_csv("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmt.csv")
 
 # Dataframe for selected projects (score higher than the threshold value)
 selected_projects = pd.DataFrame()

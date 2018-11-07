@@ -36,3 +36,107 @@ quantile(project_4_scores$score.correctness)
 #Overall
 quantile(project_scores$score.correctness)
 ```
+
+# Storing quantial values
+
+``` {r echo=TRUE}
+
+# Project 1 quantiles
+
+proj_1_quantile <- c(quantile(project_1_scores$score.correctness)[[1]], quantile(project_1_scores$score.correctness)[[2]],
+quantile(project_1_scores$score.correctness)[[3]],
+quantile(project_1_scores$score.correctness)[[4]],
+quantile(project_1_scores$score.correctness)[[5]])
+
+
+# Project 2 quantiles
+
+proj_2_quantile <- c(quantile(project_2_scores$score.correctness)[[1]], quantile(project_2_scores$score.correctness)[[2]],
+quantile(project_2_scores$score.correctness)[[3]],
+quantile(project_2_scores$score.correctness)[[4]],
+quantile(project_2_scores$score.correctness)[[5]])
+
+
+# Project 1 quantiles
+
+proj_3_quantile <- c(quantile(project_3_scores$score.correctness)[[1]], quantile(project_3_scores$score.correctness)[[2]],
+quantile(project_3_scores$score.correctness)[[3]],
+quantile(project_3_scores$score.correctness)[[4]],
+quantile(project_3_scores$score.correctness)[[5]])
+
+
+# Project 1 quantiles
+
+proj_4_quantile <- c(quantile(project_4_scores$score.correctness)[[1]], quantile(project_4_scores$score.correctness)[[2]],
+quantile(project_4_scores$score.correctness)[[3]],
+quantile(project_4_scores$score.correctness)[[4]],
+quantile(project_4_scores$score.correctness)[[5]])
+
+```
+
+# Seperating student projects based on the score quantiles 
+```{r echo=TRUE}
+
+# Project 1
+
+temp_proj <- project_1_scores
+temp_quantile <- proj_1_quantile
+
+proj_1_q_0_to_25_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[1] & temp_proj$score.correctness < temp_quantile[2] )
+
+proj_1_q_25_to_50_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[2] & temp_proj$score.correctness < temp_quantile[3] )
+
+proj_1_q_50_to_75_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[3] & temp_proj$score.correctness < temp_quantile[4] )
+
+proj_1_q_75_to_100_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[4] & temp_proj$score.correctness <= temp_quantile[5] )
+
+# Project 2
+
+temp_proj <- project_2_scores
+temp_quantile <- proj_2_quantile
+
+proj_2_q_0_to_25_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[1] & temp_proj$score.correctness < temp_quantile[2] )
+
+proj_2_q_25_to_50_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[2] & temp_proj$score.correctness < temp_quantile[3] )
+
+proj_2_q_50_to_75_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[3] & temp_proj$score.correctness < temp_quantile[4] )
+
+proj_2_q_75_to_100_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[4] & temp_proj$score.correctness <= temp_quantile[5] )
+
+# Project 3
+
+temp_proj <- project_3_scores
+temp_quantile <- proj_3_quantile
+
+proj_3_q_0_to_25_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[1] & temp_proj$score.correctness < temp_quantile[2] )
+
+proj_3_q_25_to_50_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[2] & temp_proj$score.correctness < temp_quantile[3] )
+
+proj_3_q_50_to_75_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[3] & temp_proj$score.correctness < temp_quantile[4] )
+
+proj_3_q_75_to_100_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[4] & temp_proj$score.correctness <= temp_quantile[5] )
+
+
+# Project 4
+
+temp_proj <- project_4_scores
+temp_quantile <- proj_4_quantile
+
+proj_4_q_0_to_25_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[1] & temp_proj$score.correctness < temp_quantile[2] )
+
+proj_4_q_25_to_50_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[2] & temp_proj$score.correctness < temp_quantile[3] )
+
+proj_4_q_50_to_75_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[3] & temp_proj$score.correctness < temp_quantile[4] )
+
+proj_4_q_75_to_100_list <- filter(temp_proj, temp_proj$score.correctness >= temp_quantile[4] & temp_proj$score.correctness <= temp_quantile[5] )
+
+```
+
+# Outputting scores for each of the 4 projects
+
+```{r echo=TRUE}
+write.csv(project_1_scores, "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/Projectwise_scores/project_1_scores.csv", row.names=FALSE)
+write.csv(project_2_scores, "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/Projectwise_scores/project_2_scores.csv", row.names=FALSE)
+write.csv(project_3_scores, "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/Projectwise_scores/project_3_scores.csv", row.names=FALSE)
+write.csv(project_4_scores, "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/Projectwise_scores/project_4_scores.csv", row.names=FALSE)
+```
