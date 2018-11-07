@@ -1,0 +1,38 @@
+# Filename: print-stmt-quantile-analysis.Rmd
+
+# Read the CSV file containing all the project scores
+```{r echo=TRUE}
+library(data.table)
+library(dplyr)
+library(bit64)
+
+project_scores <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/web-cat-all_output_submission_data.csv")
+
+```
+
+# Cleaning the data
+
+```{r echo=TRUE}
+project_scores <- na.omit(project_scores)
+```
+
+# Create data.table for each of the 4 projects
+
+```{r echo=TRUE}
+project_1_scores <- filter(project_scores, project_scores$assignment == 'Project 1')
+project_2_scores <- filter(project_scores, project_scores$assignment == 'Project 2')
+project_3_scores <- filter(project_scores, project_scores$assignment == 'Project 3')
+project_4_scores <- filter(project_scores, project_scores$assignment == 'Project 4')
+```
+
+# Generating Quantiles for each of the 4 projects
+
+```{r echo-TRUE}
+quantile(project_1_scores$score.correctness)
+quantile(project_2_scores$score.correctness)
+quantile(project_3_scores$score.correctness)
+quantile(project_4_scores$score.correctness)
+
+#Overall
+quantile(project_scores$score.correctness)
+```
