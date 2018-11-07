@@ -1,5 +1,11 @@
 # Filename: print-stmt-quantile-analysis.Rmd
 
+# About: 
+ - This R script reads the whole CSV file containing all the projects with their scores. 
+ - The script then firstly cleans the data, then seperates the data based on project 1, 2, 3, or 4, then further seperates the data based on the score of the project. 
+ - The final separation is done by calculating quantiles of each of the project scores and then listing the projects into groups for each quantiles.
+
+
 # Read the CSV file containing all the project scores
 ```{r echo=TRUE}
 library(data.table)
@@ -139,4 +145,70 @@ write.csv(project_1_scores, "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis 
 write.csv(project_2_scores, "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/Projectwise_scores/project_2_scores.csv", row.names=FALSE)
 write.csv(project_3_scores, "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/Projectwise_scores/project_3_scores.csv", row.names=FALSE)
 write.csv(project_4_scores, "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/Projectwise_scores/project_4_scores.csv", row.names=FALSE)
+```
+
+# Outputting list of student project scores based on the quantile values
+
+```{r echo=TRUE}
+
+# Project 1
+
+write.csv(proj_1_q_0_to_25_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 1/proj_1_q_0_to_25_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_1_q_25_to_50_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 1/proj_1_q_25_to_50_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_1_q_50_to_75_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 1/proj_1_q_50_to_75_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_1_q_75_to_100_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 1/proj_1_q_75_to_100_list.csv"
+          ,row.names = FALSE)
+
+# Project 2
+
+write.csv(proj_2_q_0_to_25_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 2/proj_2_q_0_to_25_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_2_q_25_to_50_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 2/proj_2_q_25_to_50_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_2_q_50_to_75_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 2/proj_2_q_50_to_75_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_2_q_75_to_100_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 2/proj_2_q_75_to_100_list.csv"
+          ,row.names = FALSE)
+
+# Project 3
+
+write.csv(proj_3_q_0_to_25_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 3/proj_3_q_0_to_25_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_3_q_25_to_50_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 3/proj_3_q_25_to_50_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_3_q_50_to_75_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 3/proj_3_q_50_to_75_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_3_q_75_to_100_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 3/proj_3_q_75_to_100_list.csv"
+          ,row.names = FALSE)
+
+# Project 4
+
+write.csv(proj_4_q_0_to_25_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 4/proj_4_q_0_to_25_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_4_q_25_to_50_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 4/proj_4_q_25_to_50_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_4_q_50_to_75_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 4/proj_4_q_50_to_75_list.csv"
+          ,row.names = FALSE)
+write.csv(proj_4_q_75_to_100_list,
+          "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/QuantileScoreWise/Project 4/proj_4_q_75_to_100_list.csv"
+          ,row.names = FALSE)
+
 ```
