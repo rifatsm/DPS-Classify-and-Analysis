@@ -59,8 +59,10 @@ Return: None
 '''
 def storing_values_in_global_vars():
 
+	global print_stmt_filename, file_directory_project_1, file_directory_project_2, file_directory_project_4
+
 	# CSV file with all the print statements
-	print_stmt_filename = pd.read_csv("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv")
+	print_stmt_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv"
 
 	# Project 1 file directory
 	file_directory_project_1 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_1.txt"
@@ -81,7 +83,7 @@ Params: None
 Return: None
 '''
 def storing_trivial_print_stmt():
-
+	global trivial_print_stmt
 	# List of empty and trivial print statements 
 	trivial_print_stmt = ['System.out.println()', '("" -> "")', 'System.out.println("""")', '-> "")', '(""\n"");', '("");', 'System.out.println("" "")', 'System.out.print()', '(""->"");', '(""\n\n"")', '(""\n \n"")', 'System.out.print);', 'System.out.println("" "");']
 	pass
@@ -108,8 +110,8 @@ def read_specs(project_spec_list, file_directory):
 			line = line.replace('\r\n','') # Getting rid of carriage return and newline 
 			line = line.replace('\n', '') # Getting rid of only newline 
 			project_spec_list.append(line)
-	print "Project specs: "
-	print project_spec_list
+	# print "Project specs: "
+	# print project_spec_list
 	pass
 
 
@@ -296,5 +298,8 @@ read_specs(project_spec_2, file_directory_project_2)
 # read_specs(project_spec_3, file_directory_project_3)
 print "Gathering project specs for Project 4"
 read_specs(project_spec_4, file_directory_project_4)
+
+# Step 4
+# Classify print statements into DPS and Non-DPS
 
 print "Closing the script. Bye!"
