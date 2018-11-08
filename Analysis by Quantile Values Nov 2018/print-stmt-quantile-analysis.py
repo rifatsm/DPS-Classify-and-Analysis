@@ -9,8 +9,8 @@ import pandas as pd
 
 # Reading the CSV file containing all the print statements
 print "Initiating `print-stmt-quantile-analysis` script:"
-print "Reading print_stmt..."
-print_stmt = pd.read_csv("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmt.csv")
+print "Reading latest print_stmt..."
+print_stmt = pd.read_csv("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv")
 
 # Dataframe for selected projects (score higher than the threshold value)
 selected_projects = pd.DataFrame()
@@ -216,3 +216,5 @@ def classify_dps(print_stmt_list, project_no, high_or_low):
 # classify_dps(print_stmt_low_score, "Project 2", "low")
 # classify_dps(print_stmt_low_score, "Project 3", "low")
 # classify_dps(print_stmt_low_score, "Project 4", "low") 
+
+print "Closing the script. Bye!"
