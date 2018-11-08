@@ -114,6 +114,65 @@ def read_specs(project_spec_list, file_directory):
 	# print project_spec_list
 	pass
 
+'''
+Description: Classifies print statements to DPS or Non-DPS based on the criteria mentioned inside the function
+Params: print_stmt_list = List of all the print statements
+		project_no = Project no 
+Return: None
+'''
+def classify_dps(print_stmt_list, project_no):
+
+	## Classifying DPS based the following criteria:
+	# A DPS cannot be an empty statement (such as, 'System.out.println()')
+	# A DPS cannot be a trivial statement (such as, 'System.out.print("\n")')
+	# A DPS cannot be a `Final` statement (print statements that appear in the final submission)
+	# A DPS cannont contain any element of the project specifications (The required print statements for Web-CAT test cases)
+	# If none of the above criteria is satisfied then we can classify the statement as a potential DPS
+
+	# First take the sample set of the specified project by pruning the total dataset 
+	print_stmt_list = print_stmt_list.loc[print_stmt_list['CASSIGNMENTNAME'] == project_no]
+
+	# Selecting project spec 
+	if project_no == 'Project 1':
+		project_spec = project_spec_1
+	elif project_no == 'Project 2':
+		project_spec = project_spec_2
+	elif project_no == 'Project 3':
+		project_spec = project_spec_3
+	elif project_no == 'Project 4':
+		project_spec = project_spec_4
+
+	# List of DPS values
+	dps_list = []
+
+	print "Iterating over rows of `print_stmt_list`..."
+	# Iterate over rows 
+	for index, row in print_stmt_list.iterrows():
+		dps_value = 1
+
+		# Checking for Trivial print statements
+		if any(phrase in row['PrintStatements'] for phrase in trivial_print_stmt):
+			dps_value = 0
+			# print "Trivial: " + row['PrintStatements'] 
+		# Checking for `Final` statements
+		if row['Subtype'] == 'Final':
+			dps_value = 0
+		# Checking for project specs 
+		if any(spec in row['PrintStatements'] for spec in project_spec):
+			dps_value = 0
+
+		dps_list.append(dps_value)
+
+	# Converting List into Series in order to add as a new column to the existing dataframe 
+	dps_series = pd.Series(dps_list)
+	# Adding the values of the Series to the new column 
+	print_stmt_list['DPS'] = dps_series.values
+
+	print "Outputting to CSV file..."
+	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/"
+	print_stmt_list.to_csv(output_directory +project_no+ "_print_stmt_list.csv", index=False)
+	pass
+
 
 def concatenate_func():
 
@@ -178,60 +237,6 @@ def concatenate_func():
 
 	# Here, the `print_stmt_modifeid` dataframe contains 80284 rows. 
 	# On the contrary, the `print_stmt_high_score` dataframe contains 45337 rows. 
-	pass
-
-
-
-def classify_dps(print_stmt_list, project_no, high_or_low):
-
-	## Classifying DPS based the following criteria:
-	# A DPS cannot be an empty statement (such as, 'System.out.println()')
-	# A DPS cannot be a trivial statement (such as, 'System.out.print("\n")')
-	# A DPS cannot be a `Final` statement (print statements that appear in the final submission)
-	# A DPS cannont contain any element of the project specifications (The required print statements for Web-CAT test cases)
-	# If none of the above criteria is satisfied then we can classify the statement as a potential DPS
-
-	# First take the sample set of the specified project by pruning the total dataset 
-	print_stmt_list = print_stmt_list.loc[print_stmt_list['CASSIGNMENTNAME'] == project_no]
-
-	# Selecting project spec 
-	if project_no == 'Project 1':
-		project_spec = project_spec_1
-	elif project_no == 'Project 2':
-		project_spec = project_spec_2
-	elif project_no == 'Project 3':
-		project_spec = project_spec_3
-	elif project_no == 'Project 4':
-		project_spec = project_spec_4
-
-	# List of DPS values
-	dps_list = []
-
-	print "Iterating over rows of `print_stmt_list`..."
-	# Iterate over rows 
-	for index, row in print_stmt_list.iterrows():
-		dps_value = 1
-
-		# Checking for Trivial print statements
-		if any(phrase in row['PrintStatements'] for phrase in trivial_print_stmt):
-			dps_value = 0
-			# print "Trivial: " + row['PrintStatements'] 
-		# Checking for `Final` statements
-		if row['Subtype'] == 'Final':
-			dps_value = 0
-		# Checking for project specs 
-		if any(spec in row['PrintStatements'] for spec in project_spec):
-			dps_value = 0
-
-		dps_list.append(dps_value)
-
-	# Converting List into Series in order to add as a new column to the existing dataframe 
-	dps_series = pd.Series(dps_list)
-	# Adding the values of the Series to the new column 
-	print_stmt_list['DPS'] = dps_series.values
-
-	print "Outputting to CSV file..."
-	print_stmt_list.to_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/" +project_no+ "_print_stmt_list_" + high_or_low + ".csv", index=False)
 	pass
 
 # Step 1
@@ -301,5 +306,5 @@ read_specs(project_spec_4, file_directory_project_4)
 
 # Step 4
 # Classify print statements into DPS and Non-DPS
-
+classify_dps(all_print_stmts, "Project 1")
 print "Closing the script. Bye!"
