@@ -10,7 +10,8 @@ import pandas as pd
 # Reading the CSV file containing all the print statements
 print "Initiating `print-stmt-quantile-analysis` script:"
 print "Reading latest print_stmt..."
-print_stmt = pd.read_csv("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv")
+# print_stmt = pd.read_csv("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv")
+print_stmt_filename = ""
 
 # Dataframe for selected projects (score higher than the threshold value)
 selected_projects = pd.DataFrame()
@@ -37,20 +38,79 @@ project_spec_3 = []
 project_spec_4 = []
 
 # Project 1 file directory
-file_directory_project_1 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_1.txt"
+file_directory_project_1 = ""
 
 # Project 2 file directory
-file_directory_project_2 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_2.txt"
+file_directory_project_2 = ""
 
 # Project 3 file directory
-#file_directory_project_3 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_3.txt"
+#file_directory_project_3 = ""
 
 # Project 4 file directory
-file_directory_project_4 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_4.txt"
+file_directory_project_4 = ""
 
 # List of empty and trivial print statements 
-trivial_print_stmt = ['System.out.println()', '("" -> "")', 'System.out.println("""")', '-> "")', '(""\n"");', '("");', 'System.out.println("" "")', 'System.out.print()', '(""->"");', '(""\n\n"")', '(""\n \n"")', 'System.out.print);', 'System.out.println("" "");']
+trivial_print_stmt = []
 
+'''
+Description: Storing values in the global variables
+Params: None
+Return: None
+'''
+def storing_values_in_global_vars():
+
+	# CSV file with all the print statements
+	print_stmt_filename = pd.read_csv("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv")
+
+	# Project 1 file directory
+	file_directory_project_1 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_1.txt"
+
+	# Project 2 file directory
+	file_directory_project_2 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_2.txt"
+
+	# Project 3 file directory (Empty)
+	#file_directory_project_3 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_3.txt"
+
+	# Project 4 file directory
+	file_directory_project_4 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_4.txt"
+	pass
+
+'''
+Description: Storing trivial print statements values 
+Params: None
+Return: None
+'''
+def storing_trivial_print_stmt():
+
+	# List of empty and trivial print statements 
+	trivial_print_stmt = ['System.out.println()', '("" -> "")', 'System.out.println("""")', '-> "")', '(""\n"");', '("");', 'System.out.println("" "")', 'System.out.print()', '(""->"");', '(""\n\n"")', '(""\n \n"")', 'System.out.print);', 'System.out.println("" "");']
+	pass
+
+
+'''
+Description: Function to read all the print statements
+Params: filename = name of the CSV file with path directory
+Return: Dataframe
+'''
+def read_all_print_stmts(filename):
+	return pd.read_csv(filename)
+
+
+'''
+Description: Reading the specific required output statements for a particular project 
+Params: project_spec_list = the project specific global list containing required output statements for that particular project 
+		file_directory = the TXT file containing all the required output statements for that particular project 
+Return: None
+'''
+def read_specs(project_spec_list, file_directory):
+	with open(file_directory) as file_read:
+		for line in file_read:
+			line = line.replace('\r\n','') # Getting rid of carriage return and newline 
+			line = line.replace('\n', '') # Getting rid of only newline 
+			project_spec_list.append(line)
+	print "Project specs: "
+	print project_spec_list
+	pass
 
 
 def concatenate_func():
@@ -118,15 +178,7 @@ def concatenate_func():
 	# On the contrary, the `print_stmt_high_score` dataframe contains 45337 rows. 
 	pass
 
-def read_specs(project_spec_list, file_directory):
-	with open(file_directory) as file_read:
-		for line in file_read:
-			line = line.replace('\r\n','') # Getting rid of carriage return and newline 
-			line = line.replace('\n', '') # Getting rid of only newline 
-			project_spec_list.append(line)
-	# print "Project specs: "
-	# print project_spec_list
-	pass
+
 
 def classify_dps(print_stmt_list, project_no, high_or_low):
 
@@ -216,5 +268,33 @@ def classify_dps(print_stmt_list, project_no, high_or_low):
 # classify_dps(print_stmt_low_score, "Project 2", "low")
 # classify_dps(print_stmt_low_score, "Project 3", "low")
 # classify_dps(print_stmt_low_score, "Project 4", "low") 
+
+
+#############
+# New Steps #
+#############
+
+# Step 1
+# Populating global values
+print "Populating global values"
+storing_values_in_global_vars()
+storing_trivial_print_stmt()
+
+# Step 2
+# Reading all the print statements from the CSV file 
+print "Reading all the print statements from the CSV file"
+all_print_stmts = read_all_print_stmts(print_stmt_filename)
+
+# Step 3
+# Reading required output specifications for each of the 4 projects 
+# Except Project 3, because we do not have any specific required output for Project 3. 
+print "Gathering project specs for Project 1"
+read_specs(project_spec_1, file_directory_project_1)
+print "Gathering project specs for Project 2"
+read_specs(project_spec_2, file_directory_project_2)
+# print "Gathering project specs for Project 3"
+# read_specs(project_spec_3, file_directory_project_3)
+print "Gathering project specs for Project 4"
+read_specs(project_spec_4, file_directory_project_4)
 
 print "Closing the script. Bye!"
