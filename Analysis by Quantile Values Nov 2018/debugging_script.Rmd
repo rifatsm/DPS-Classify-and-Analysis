@@ -11,7 +11,29 @@ library(data.table)
 library(dplyr)
 library(bit64)
 
-project_scores <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/web-cat-all_output_submission_data.csv")
+# project_scores <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/web-cat-all_output_submission_data.csv")
+
+all_print_stmts <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv")
+
+classified_print_stmts_proj_1 <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 1_print_stmt_list.csv")
+classified_print_stmts_proj_2 <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 2_print_stmt_list.csv")
+classified_print_stmts_proj_3 <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 3_print_stmt_list.csv")
+classified_print_stmts_proj_4 <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 4_print_stmt_list.csv")
 
 ```
 
+# Separating the data based on Project no
+
+```{r echo=TRUE}
+proj_1_print_stmts <- filter(all_print_stmts, all_print_stmts$CASSIGNMENTNAME == "Project 1")
+proj_2_print_stmts <- filter(all_print_stmts, all_print_stmts$CASSIGNMENTNAME == "Project 2")
+proj_3_print_stmts <- filter(all_print_stmts, all_print_stmts$CASSIGNMENTNAME == "Project 3")
+proj_4_print_stmts <- filter(all_print_stmts, all_print_stmts$CASSIGNMENTNAME == "Project 4")
+```
+
+# Viewing different variables
+```{r echo=TRUE}
+View(head(all_print_stmts, n=1000))
+View(head(classified_print_stmts_proj_1, n=100))
+View(head(classified_print_stmts_proj_2, n=100))
+```

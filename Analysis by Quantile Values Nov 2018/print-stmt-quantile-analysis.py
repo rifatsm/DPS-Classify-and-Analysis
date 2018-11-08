@@ -2,8 +2,8 @@
 # print-stmt-quantile-analysis.py #
 ###################################
 
-# This Python script is to classify the print statements to DPS and Non-DPS
-# Please Note: A lot of the script is copied from `print-stmt-dps-analysis.py` and is under the process of moderation
+# This Python script is to classify the print statements to DPS and Non-DPS (Step 1-4)
+# This Python script further analyzes the print statements based on the quantile scores (Step 5)
 
 import pandas as pd
 
@@ -306,5 +306,16 @@ read_specs(project_spec_4, file_directory_project_4)
 
 # Step 4
 # Classify print statements into DPS and Non-DPS
+print "Classifying Project 1"
 classify_dps(all_print_stmts, "Project 1")
+print "Classifying Project 2"
+classify_dps(all_print_stmts, "Project 2")
+print "Classifying Project 3"
+classify_dps(all_print_stmts, "Project 3")
+print "Classifying Project 4"
+classify_dps(all_print_stmts, "Project 4")
+
+# Step 5 
+#  
+
 print "Closing the script. Bye!"
