@@ -33,7 +33,13 @@ proj_4_print_stmts <- filter(all_print_stmts, all_print_stmts$CASSIGNMENTNAME ==
 
 # Viewing different variables
 ```{r echo=TRUE}
-View(head(all_print_stmts, n=1000))
+specific_project <- filter(all_print_stmts, all_print_stmts$projectId == "1aa1f06c-44a1-484e-931e-cda257938f44")
+
+specific_project <- setDT(specific_project)
+
+View(head(specific_project[order(time),], n=1000))
+
+View(head(all_print_stmts[order(time),], n=1000))
 View(head(classified_print_stmts_proj_1, n=100))
 View(head(classified_print_stmts_proj_2, n=100))
 ```
