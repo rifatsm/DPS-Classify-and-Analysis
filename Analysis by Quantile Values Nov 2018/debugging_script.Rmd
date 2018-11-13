@@ -37,7 +37,13 @@ specific_project <- filter(all_print_stmts, all_print_stmts$projectId == "1aa1f0
 
 specific_project <- setDT(specific_project)
 
+specific_project_2 <- filter(classified_print_stmts_proj_2, classified_print_stmts_proj_2$projectId == "0049f7b2-3c13-4da0-9fa2-553b87cbbe71")
+
+specific_project_2 <- setDT(specific_project_2)
+
 View(head(specific_project[order(time),], n=1000))
+
+View(head(specific_project_2[order(time),], n=1000))
 
 View(head(all_print_stmts[order(time),], n=1000))
 View(head(classified_print_stmts_proj_1, n=100))
