@@ -255,6 +255,9 @@ if(debug_mode == 0):
 
 	if(step_1 == 1):
 		# Step 1
+		'''
+		Description: Setting up the environment
+		'''
 		print "##########"
 		print "# Step 1 #"
 		print "##########"
@@ -266,6 +269,9 @@ if(debug_mode == 0):
 
 	if(step_2 == 1):
 		# Step 2
+		'''
+		Description: Getitng all the print statement (for all the projects)
+		'''
 		print "##########"
 		print "# Step 2 #"
 		print "##########"
@@ -276,6 +282,9 @@ if(debug_mode == 0):
 
 	if(step_3 == 1):
 		# Step 3
+		'''
+		Description: Preparing the required output specifications
+		'''
 		print "##########"
 		print "# Step 3 #"
 		print "##########"
@@ -292,9 +301,12 @@ if(debug_mode == 0):
 		print "Gathering project specs for Project 4 ",
 		read_specs(project_spec_4, file_directory_project_4)
 		print "(Done)"
-		
+
 	if(step_4 == 1):
 		# Step 4
+		'''
+		Description: Classifying all the print statements
+		'''
 		print "##########"
 		print "# Step 4 #"
 		print "##########"
@@ -310,6 +322,9 @@ if(debug_mode == 0):
 
 	if(step_5 == 1):
 		# Step 5 
+		'''
+		Description: Getting Total PS count, DPS count, and Non-DPS count for each projects
+		'''
 		print "##########"
 		print "# Step 5 #"
 		print "##########"
