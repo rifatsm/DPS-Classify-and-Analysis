@@ -182,6 +182,22 @@ Return:
 def counting_DPS(print_stmt_filename):
 	print_stmt_list = read_all_print_stmts(print_stmt_filename)
 	unique_project_list = print_stmt_list.userId.unique()
+	print "unique_project_list"
+	# print unique_project_list
+
+	print "len of list: " + str(len(unique_project_list))
+	count = 0
+	for project in unique_project_list:
+		count=count+1
+		# print str(count) + " " +  project
+
+	# # Gettting the number of rows for a specific userId
+	# print "total print statements for one project"
+	# print print_stmt_list.loc[print_stmt_list['userId'] == 'tyler45'].userId.count()
+	# # Getting the number of DPS for a specific userId
+	# print "DPS"
+	# print print_stmt_list.loc[(print_stmt_list['userId'] == 'tyler45') & (print_stmt_list['DPS'] == 1)].userId.count()
+
 	pass
 
 
@@ -235,6 +251,26 @@ if(debug_mode == 0):
 	# Step 5 
 	#  
 elif(debug_mode == 1):
-	counting_DPS()
+	# Inside Debug Mode 
+	print "##############"
+	print "# Debug Mode #"
+	print "##############"
+
+	# Getting the files for each of the 4 projects
+	project_1_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 1_print_stmt_list.csv"
+	project_2_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 2_print_stmt_list.csv"
+	project_3_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 3_print_stmt_list.csv"
+	project_4_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 4_print_stmt_list.csv"
+	
+	# Running the 
+	print "Running counting_DPS for Project 1"
+	counting_DPS(project_1_filename)
+	counting_DPS(project_2_filename)
+	counting_DPS(project_3_filename)
+	counting_DPS(project_4_filename)
 	pass
+else:
+	print "Invalid mode!"
+
+# Closing the Python Script	
 print "Closing the script. Bye!"

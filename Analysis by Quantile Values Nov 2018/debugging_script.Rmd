@@ -49,3 +49,8 @@ View(head(all_print_stmts[order(time),], n=1000))
 View(head(classified_print_stmts_proj_1, n=100))
 View(head(classified_print_stmts_proj_2, n=100))
 ```
+
+# Getting the unique userId for each of the projects 
+```{r echo=TRUE}
+
+```
