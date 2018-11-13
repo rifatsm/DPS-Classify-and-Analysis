@@ -203,11 +203,16 @@ def counting_DPS(print_stmt_filename, project_no):
 
 	# Converting list to dataframe 
 	print "Merging all in one dataframe...",
-	print_stmt_df = pd.DataFrame(unique_project_list)
+	print_stmt_df = pd.DataFrame()
+	print_stmt_df['userId'] = unique_project_list
 	print_stmt_df['Total PS'] = total_list
 	print_stmt_df['DPS count'] = dps_list
 	print_stmt_df['Non-DPS count'] = n_dps_list
 	print "(Done)"
+
+	# Renaming column name to 'userId'
+	# print_stmt_df = print_stmt_df.rename(index=str, columns={"0": "userId"})
+	# print print_stmt_df
 
 	# Output the dataframe to a CSV file 
 	print "Outputting to CSV file...",
@@ -242,7 +247,7 @@ def merging_scores(score_filename, print_stmt_filename, project_no):
 	# print score_df
 
 	# Merging score w/ counted ps
-	score_merged = pd.merge(ps_counted_list, score_df, how='inner', on='userId')
+	score_merged = pd.merge(ps_counted_list, score_df, how='left', on='userId')
 	print "score_merged"
 	print score_merged
 	pass
