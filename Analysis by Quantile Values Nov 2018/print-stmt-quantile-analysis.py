@@ -173,45 +173,68 @@ def classify_dps(print_stmt_list, project_no):
 	print_stmt_list.to_csv(output_directory +project_no+ "_print_stmt_list.csv", index=False)
 	pass
 
+'''
+Description: Counts the DPS for each of the projects
+Params: 
+Return:
+'''
+
+def counting_DPS(print_stmt_filename):
+	print_stmt_list = read_all_print_stmts(print_stmt_filename)
+	unique_project_list = print_stmt_list.userId.unique()
+	pass
+
+
+##############
+# Debug Mode #
+##############
+'''
+Description: For debugging purposes, please set the debug_mode ON. 
+			For running the actual steps, please reset the debug_mode. 
+'''
+debug_mode = 1
+
 #############
 # New Steps #
 #############
+if(debug_mode == 0):
+	# Step 1
+	# Populating global values
+	print "Populating global values"
+	storing_values_in_global_vars()
+	storing_trivial_print_stmt()
 
-# Step 1
-# Populating global values
-print "Populating global values"
-storing_values_in_global_vars()
-storing_trivial_print_stmt()
+	# Step 2
+	# Reading all the print statements from the CSV file 
+	print "Reading all the print statements from the CSV file"
+	all_print_stmts = read_all_print_stmts(print_stmt_filename)
 
-# Step 2
-# Reading all the print statements from the CSV file 
-print "Reading all the print statements from the CSV file"
-all_print_stmts = read_all_print_stmts(print_stmt_filename)
+	# Step 3
+	# Reading required output specifications for each of the 4 projects 
+	# Except Project 3, because we do not have any specific required output for Project 3. 
+	print "Gathering project specs for Project 1"
+	read_specs(project_spec_1, file_directory_project_1)
+	print "Gathering project specs for Project 2"
+	read_specs(project_spec_2, file_directory_project_2)
+	# print "Gathering project specs for Project 3"
+	# read_specs(project_spec_3, file_directory_project_3)
+	print "Gathering project specs for Project 4"
+	read_specs(project_spec_4, file_directory_project_4)
 
-# Step 3
-# Reading required output specifications for each of the 4 projects 
-# Except Project 3, because we do not have any specific required output for Project 3. 
-print "Gathering project specs for Project 1"
-read_specs(project_spec_1, file_directory_project_1)
-print "Gathering project specs for Project 2"
-read_specs(project_spec_2, file_directory_project_2)
-# print "Gathering project specs for Project 3"
-# read_specs(project_spec_3, file_directory_project_3)
-print "Gathering project specs for Project 4"
-read_specs(project_spec_4, file_directory_project_4)
+	# Step 4
+	# Classify print statements into DPS and Non-DPS
+	print "Classifying Project 1"
+	classify_dps(all_print_stmts, "Project 1")
+	print "Classifying Project 2"
+	classify_dps(all_print_stmts, "Project 2")
+	print "Classifying Project 3"
+	classify_dps(all_print_stmts, "Project 3")
+	print "Classifying Project 4"
+	classify_dps(all_print_stmts, "Project 4")
 
-# Step 4
-# Classify print statements into DPS and Non-DPS
-print "Classifying Project 1"
-classify_dps(all_print_stmts, "Project 1")
-print "Classifying Project 2"
-classify_dps(all_print_stmts, "Project 2")
-print "Classifying Project 3"
-classify_dps(all_print_stmts, "Project 3")
-print "Classifying Project 4"
-classify_dps(all_print_stmts, "Project 4")
-
-# Step 5 
-#  
-
+	# Step 5 
+	#  
+elif(debug_mode == 1):
+	counting_DPS()
+	pass
 print "Closing the script. Bye!"
