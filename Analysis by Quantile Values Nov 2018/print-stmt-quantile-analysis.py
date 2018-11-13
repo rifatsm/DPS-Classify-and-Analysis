@@ -62,7 +62,7 @@ def storing_values_in_global_vars():
 	global print_stmt_filename, file_directory_project_1, file_directory_project_2, file_directory_project_4
 
 	# CSV file with all the print statements
-	print_stmt_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv"
+	print_stmt_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Nov 09, 2018/print-stmts.csv"
 
 	# Project 1 file directory
 	file_directory_project_1 = "/Users/Ri/ToyRepo/CS3114F16_Oracle_Sample_Outputs_simplified/output_samples_Project_1.txt"
@@ -172,110 +172,6 @@ def classify_dps(print_stmt_list, project_no):
 	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/"
 	print_stmt_list.to_csv(output_directory +project_no+ "_print_stmt_list.csv", index=False)
 	pass
-
-
-def concatenate_func():
-
-	# Getting all the projects with score higher than threshold score 
-	# Selecting only columns `userName`, `assignment`, and `score`
-	# Getting the `userName` and the `assignment` concatenated and then added to a dataframe 
-
-	# Scores below the threshold score
-	# print consolidated[consolidated.score < 0.50] # 68 rows
-
-	# Reading the CSV file containing all the project with project score
-	# We read it to put a threshold score to all the projects and select the ones with higher score than the threshold score 
-	print "Reading consolidated.csv"
-	consolidated = pd.read_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/consolidated.csv")
-
-	threshold_score = 0.50
-	column_list = ['userName', 'assignment', 'score']
-	print "Getting all the projects with score higher than threshold score..."
-	consolidated_modified = consolidated[consolidated.score >= threshold_score].loc[:, consolidated.columns.isin(column_list)] # 367 rows
-	print "For consolidated_modified, getting the `userName` and the `assignment` concatenated and then added to a dataframe..."
-	selected_projects['concatenated'] = consolidated_modified[['userName', 'assignment']].apply(lambda x: '__'.join(x), axis=1)
-
-	print "Getting all the projects with ZERO score"
-	consolidated_zero = consolidated[consolidated.score == 0].loc[:, consolidated.columns.isin(column_list)] # 50 rows
-	print "For consolidated_zero, getting the `userName` and the `assignment` concatenated and then added to a dataframe..."
-	zero_projects['concatenated'] = consolidated_zero[['userName', 'assignment']].apply(lambda x: '__'.join(x), axis=1)
-
-	print "Outputting selected_projects.csv"
-	selected_projects.to_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/selected_projects.csv", index=False)
-	
-	print "Outputting zero_projects.csv"
-	zero_projects.to_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/zero_projects.csv", index=False)
-
-	print "Making a copy of print_stmt"
-	print_stmt_modified = print_stmt
-	print "For print_stmt, getting the `userName` and the `assignment` concatenated..."
-	print_stmt_modified['concatenated'] = print_stmt[['userId', 'CASSIGNMENTNAME']].apply(lambda x: '__'.join(x), axis=1)
-
-	print "Discarding the ZERO projects from the print_stmt_modified"
-	print_stmt_modified = print_stmt_modified.loc[~print_stmt_modified['concatenated'].isin(zero_projects['concatenated'].tolist())]
-
-	print "Discarding the deletion instances of the print statements in print_stmt_modified"
-	print_stmt_modified = print_stmt_modified.loc[print_stmt_modified['Subsubtype'] != 'Deletion']
-
-	print "Outputting print_stmt_modified.csv"
-	print_stmt_modified.to_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_modified.csv", index=False)
-
-	print "Merging (Inner Join) two dataframes... Getting print statements w/ high score"
-	print_stmt_high_score = pd.merge(print_stmt_modified, selected_projects[['concatenated']], how='inner', on='concatenated')
-
-	print "Getting print statements w/ low score"
-	print_stmt_low_score = print_stmt_modified.loc[~print_stmt_modified['concatenated'].isin(selected_projects['concatenated'].tolist())]
-
-	# TODO discard the column `concatenated` from `print_stmt_modified` and `print_stmt_high_score`
-
-	print "Outing print_stmt_high_score.csv"
-	print_stmt_high_score.to_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_high_score.csv", index=False)
-
-	print "Outing print_stmt_low_score.csv"
-	print_stmt_low_score.to_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_low_score.csv", index=False)
-
-
-	# Here, the `print_stmt_modifeid` dataframe contains 80284 rows. 
-	# On the contrary, the `print_stmt_high_score` dataframe contains 45337 rows. 
-	pass
-
-# Step 1
-
-# # Running functions
-# concatenate_func()
-
-# Step 2 (Run the following together)
-
-# # Getting all the specs
-# print "Gathering project specs for Project 1"
-# read_specs(project_spec_1, file_directory_project_1)
-# print "Gathering project specs for Project 2"
-# read_specs(project_spec_2, file_directory_project_2)
-# # print "Gathering project specs for Project 3"
-# # read_specs(project_spec_3, file_directory_project_3)
-# print "Gathering project specs for Project 4"
-# read_specs(project_spec_4, file_directory_project_4)
-
-# # Reading the CSV generated by concatenate_func(), so that we do not have to run the func more than once
-# print "Classifying print statements w/ high score"
-# print_stmt_high_score = pd.read_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_high_score.csv")
-# print_stmt_high_score = print_stmt_high_score.drop(columns=['concatenated'])
-# # Classifying print statements with high score
-# classify_dps(print_stmt_high_score, "Project 1", "high")
-# classify_dps(print_stmt_high_score, "Project 2", "high")
-# classify_dps(print_stmt_high_score, "Project 3", "high")
-# classify_dps(print_stmt_high_score, "Project 4", "high")
-
-# # Reading the CSV generated by concatenate_func(), so that we do not have to run the func more than once
-# print "Classifying print statements w/ low score"
-# print_stmt_low_score = pd.read_csv("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/Selecting_DPS_w_threshold/print_stmt_low_score.csv")
-# print_stmt_low_score = print_stmt_low_score.drop(columns=['concatenated'])
-# # Classifying print statements with low score
-# classify_dps(print_stmt_low_score, "Project 1", "low")
-# classify_dps(print_stmt_low_score, "Project 2", "low")
-# classify_dps(print_stmt_low_score, "Project 3", "low")
-# classify_dps(print_stmt_low_score, "Project 4", "low") 
-
 
 #############
 # New Steps #
