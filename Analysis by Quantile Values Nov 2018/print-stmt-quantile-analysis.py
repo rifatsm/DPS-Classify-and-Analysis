@@ -217,6 +217,35 @@ def counting_DPS(print_stmt_filename, project_no):
 
 	pass
 
+'''
+Description: Merges project score to the project 
+Params: score_filename = File containing scores for all the projects
+		print_stmt_filename = File containing all the print statements for a particular project
+		project_no = Project No
+Return: None
+'''
+def merging_scores(score_filename, print_stmt_filename, project_no):
+	# Reading files
+	print "Reading file: " + score_filename,
+	score_list = read_all_print_stmts(score_filename)
+	print " (Done)"
+	print "Reading file: " + print_stmt_filename,
+	ps_counted_list = read_all_print_stmts(print_stmt_filename)
+	print " (Done)"
+
+	# Filtering scores
+	score_list = score_list.loc[score_list['assignment'] == project_no]
+	score_df = pd.DataFrame()
+	score_df['userId'] = score_list['userName']
+	score_df['Score'] = score_list['score.correctness']
+	# print "score_df"
+	# print score_df
+
+	# Merging score w/ counted ps
+	score_merged = pd.merge(ps_counted_list, score_df, how='inner', on='userId')
+	print "score_merged"
+	print score_merged
+	pass
 
 ##############
 # Debug Mode #
@@ -240,13 +269,15 @@ step_2 = 0
 step_3 = 0
 step_4 = 0
 step_5 = 0
+step_6 = 0
 
 # Setting values to the steps we want to execute
-step_1 = 1
-step_2 = 1
-step_3 = 1
-step_4 = 1
+# step_1 = 1
+# step_2 = 1
+# step_3 = 1
+# step_4 = 1
 step_5 = 1
+step_6 = 1
 
 #########
 # Steps #
@@ -335,7 +366,7 @@ if(debug_mode == 0):
 		project_3_filename = directory + "Project 3_print_stmt_list.csv"
 		project_4_filename = directory + "Project 4_print_stmt_list.csv"
 		
-		# Running the 
+		# Running the counting functions
 		print "Running counting_DPS for Project 1"
 		counting_DPS(project_1_filename, "Project 1")
 		print "Running counting_DPS for Project 2"
@@ -344,6 +375,37 @@ if(debug_mode == 0):
 		counting_DPS(project_3_filename, "Project 3")
 		print "Running counting_DPS for Project 4"
 		counting_DPS(project_4_filename, "Project 4")
+
+	if(step_6 == 1):
+		# Step 6
+		'''
+		Description: Merging project scores
+		'''
+		print "##########"
+		print "# Step 6 #"
+		print "##########"
+
+		# Reading all the PS counted CSV files
+		directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project PS Counted/"
+		project_1_filename = directory + "Project 1_ps_counted.csv"
+		project_2_filename = directory + "Project 2_ps_counted.csv"
+		project_3_filename = directory + "Project 3_ps_counted.csv"
+		project_4_filename = directory + "Project 4_ps_counted.csv"
+
+		# Reading file containing the scores from all the projects
+		directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/"
+		score_filename = directory + "web-cat-all_output_submission_data.csv"
+
+		# Calling the merging functions
+		print "Running merging_scores for Project 1"
+		merging_scores(score_filename, project_1_filename, "Project 1")
+		# print "Running merging_scores for Project 2"
+		# merging_scores(score_filename, project_1_filename, "Project 2")
+		# print "Running merging_scores for Project 3"
+		# merging_scores(score_filename, project_1_filename, "Project 3")
+		# print "Running merging_scores for Project 4"
+		# merging_scores(score_filename, project_1_filename, "Project 4")
+
 
 elif(debug_mode == 1):
 	# Inside Debug Mode 

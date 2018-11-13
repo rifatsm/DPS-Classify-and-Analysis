@@ -11,7 +11,7 @@ library(data.table)
 library(dplyr)
 library(bit64)
 
-# project_scores <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/web-cat-all_output_submission_data.csv")
+project_scores <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/web-cat-all_output_submission_data.csv")
 
 all_print_stmts <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Nov 09, 2018/print-stmts.csv")
 
