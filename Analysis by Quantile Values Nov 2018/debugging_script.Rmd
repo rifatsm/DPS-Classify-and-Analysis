@@ -48,9 +48,21 @@ View(head(specific_project_2[order(time),], n=1000))
 View(head(all_print_stmts[order(time),], n=1000))
 View(head(classified_print_stmts_proj_1, n=100))
 View(head(classified_print_stmts_proj_2, n=100))
+
+
+# The following userId has only 6 print statements and none of them are DPS 
+# The following debugging shows that the data is infact only 6 Non-DPS 
+specific_project <- filter(classified_print_stmts_proj_1, classified_print_stmts_proj_1$userId == 'bcarly')
+specific_project <- setDT(specific_project)
+View(specific_project)
+
+
 ```
 
 # Getting the unique userId for each of the projects 
 ```{r echo=TRUE}
-
+cl_proj_1_unique = unique(classified_print_stmts_proj_1$userId)
+cl_proj_2_unique = unique(classified_print_stmts_proj_2$userId)
+cl_proj_3_unique = unique(classified_print_stmts_proj_3$userId)
+cl_proj_4_unique = unique(classified_print_stmts_proj_4$userId)
 ```

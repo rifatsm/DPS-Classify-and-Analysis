@@ -9,7 +9,6 @@ import pandas as pd
 
 # Reading the CSV file containing all the print statements
 print "Initiating `print-stmt-quantile-analysis` script:"
-print "Reading latest print_stmt..."
 # print_stmt = pd.read_csv("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Oct 22, 2018/print-stmts.csv")
 print_stmt_filename = ""
 
@@ -171,32 +170,67 @@ def classify_dps(print_stmt_list, project_no):
 	print "Outputting to CSV file..."
 	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/"
 	print_stmt_list.to_csv(output_directory +project_no+ "_print_stmt_list.csv", index=False)
+	print "(Done)"
 	pass
 
 '''
 Description: Counts the DPS for each of the projects
-Params: 
-Return:
+Params: print_stmt_filename = file containing all the print statements for a particular project
+		project_no = Project No
+Return: None
 '''
 
-def counting_DPS(print_stmt_filename):
+def counting_DPS(print_stmt_filename, project_no):
+	print "Reading file: " + print_stmt_filename
 	print_stmt_list = read_all_print_stmts(print_stmt_filename)
 	unique_project_list = print_stmt_list.userId.unique()
-	print "unique_project_list"
+	# print "unique_project_list"
 	# print unique_project_list
-
-	print "len of list: " + str(len(unique_project_list))
+	# print "len of list: " + str(len(unique_project_list))
+	total_list = []
+	dps_list = []
+	n_dps_list = []
 	count = 0
-	for project in unique_project_list:
+	print "Counting Total PS, DPS, and Non-DPS"
+	for project_userId in unique_project_list:
 		count=count+1
 		# print str(count) + " " +  project
 
-	# # Gettting the number of rows for a specific userId
-	# print "total print statements for one project"
-	# print print_stmt_list.loc[print_stmt_list['userId'] == 'tyler45'].userId.count()
-	# # Getting the number of DPS for a specific userId
-	# print "DPS"
-	# print print_stmt_list.loc[(print_stmt_list['userId'] == 'tyler45') & (print_stmt_list['DPS'] == 1)].userId.count()
+		# Gettting the number of rows for a specific userId
+		print "total print statements for the project: " + project_userId
+		_temp_total = print_stmt_list.loc[print_stmt_list['userId'] == project_userId].userId.count()
+		total_list.append(_temp_total)
+		# print _temp_total
+		# Getting the number of DPS for a specific userId
+		# print "DPS count for: " + project_userId
+		_temp_dps = print_stmt_list.loc[(print_stmt_list['userId'] == project_userId) & (print_stmt_list['DPS'] == 1)].userId.count()
+		dps_list.append(_temp_dps)
+		# print _temp_dps
+
+		n_dps_list.append(_temp_total - _temp_dps)
+
+	# Displaying the lists
+	# print "total_list"
+	# print total_list
+	# print "dps_list"
+	# print dps_list
+	# print "n_dps_list"
+	# print n_dps_list
+
+	# Converting list to dataframe 
+	print "Merging all in one dataframe"
+	print_stmt_df = pd.DataFrame(unique_project_list)
+	# print print_stmt_df
+	print_stmt_df['Total PS'] = total_list
+	print_stmt_df['DPS count'] = dps_list
+	print_stmt_df['Non-DPS count'] = n_dps_list
+	# print print_stmt_df
+
+	# Output the dataframe to a CSV file 
+	print "Outputting to CSV file...",
+	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/"
+	print_stmt_df.to_csv(output_directory +project_no+ "_ps_counted.csv", index=False)
+	print "(Done)"
 
 	pass
 
@@ -206,68 +240,109 @@ def counting_DPS(print_stmt_filename):
 ##############
 '''
 Description: For debugging purposes, please set the debug_mode ON. 
-			For running the actual steps, please reset the debug_mode. 
+			For running the actual steps, please reset the debug_mode to 0 (zero). 
 '''
-debug_mode = 1
+debug_mode = 0
 
-#############
-# New Steps #
-#############
+##################
+# Step Selection #
+##################
+
+# Declaring and initializing to 0 (zero)
+step_1 = 0
+step_2 = 0
+step_3 = 0
+step_4 = 0
+step_5 = 0
+
+# Setting values to the steps we want to execute
+# step_1 = 1
+# step_2 = 1
+# step_3 = 1
+# step_4 = 1
+step_5 = 1
+
+#########
+# Steps #
+#########
 if(debug_mode == 0):
-	# Step 1
-	# Populating global values
-	print "Populating global values"
-	storing_values_in_global_vars()
-	storing_trivial_print_stmt()
 
-	# Step 2
-	# Reading all the print statements from the CSV file 
-	print "Reading all the print statements from the CSV file"
-	all_print_stmts = read_all_print_stmts(print_stmt_filename)
+	if(step_1 == 1):
+		# Step 1
+		print "##########"
+		print "# Step 1 #"
+		print "##########"
+		# Populating global values
+		print "Populating global values"
+		storing_values_in_global_vars()
+		storing_trivial_print_stmt()
 
-	# Step 3
-	# Reading required output specifications for each of the 4 projects 
-	# Except Project 3, because we do not have any specific required output for Project 3. 
-	print "Gathering project specs for Project 1"
-	read_specs(project_spec_1, file_directory_project_1)
-	print "Gathering project specs for Project 2"
-	read_specs(project_spec_2, file_directory_project_2)
-	# print "Gathering project specs for Project 3"
-	# read_specs(project_spec_3, file_directory_project_3)
-	print "Gathering project specs for Project 4"
-	read_specs(project_spec_4, file_directory_project_4)
+	if(step_2 == 1):
+		# Step 2
+		print "##########"
+		print "# Step 2 #"
+		print "##########"
+		# Reading all the print statements from the CSV file 
+		print "Reading all the print statements from the CSV file"
+		all_print_stmts = read_all_print_stmts(print_stmt_filename)
 
-	# Step 4
-	# Classify print statements into DPS and Non-DPS
-	print "Classifying Project 1"
-	classify_dps(all_print_stmts, "Project 1")
-	print "Classifying Project 2"
-	classify_dps(all_print_stmts, "Project 2")
-	print "Classifying Project 3"
-	classify_dps(all_print_stmts, "Project 3")
-	print "Classifying Project 4"
-	classify_dps(all_print_stmts, "Project 4")
+	if(step_3 == 1):
+		# Step 3
+		print "##########"
+		print "# Step 3 #"
+		print "##########"
+		# Reading required output specifications for each of the 4 projects 
+		# Except Project 3, because we do not have any specific required output for Project 3. 
+		print "Gathering project specs for Project 1"
+		read_specs(project_spec_1, file_directory_project_1)
+		print "Gathering project specs for Project 2"
+		read_specs(project_spec_2, file_directory_project_2)
+		# print "Gathering project specs for Project 3"
+		# read_specs(project_spec_3, file_directory_project_3)
+		print "Gathering project specs for Project 4"
+		read_specs(project_spec_4, file_directory_project_4)
 
-	# Step 5 
-	#  
+	if(step_4 == 1):
+		# Step 4
+		print "##########"
+		print "# Step 4 #"
+		print "##########"
+		# Classify print statements into DPS and Non-DPS
+		print "Classifying Project 1"
+		classify_dps(all_print_stmts, "Project 1")
+		print "Classifying Project 2"
+		classify_dps(all_print_stmts, "Project 2")
+		print "Classifying Project 3"
+		classify_dps(all_print_stmts, "Project 3")
+		print "Classifying Project 4"
+		classify_dps(all_print_stmts, "Project 4")
+
+	if(step_5 == 1):
+		# Step 5 
+		print "##########"
+		print "# Step 5 #"
+		print "##########"
+		# Getting the files for each of the 4 projects
+		project_1_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 1_print_stmt_list.csv"
+		project_2_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 2_print_stmt_list.csv"
+		project_3_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 3_print_stmt_list.csv"
+		project_4_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 4_print_stmt_list.csv"
+		
+		# Running the 
+		print "Running counting_DPS for Project 1"
+		counting_DPS(project_1_filename, "Project 1")
+		print "Running counting_DPS for Project 2"
+		counting_DPS(project_2_filename, "Project 2")
+		print "Running counting_DPS for Project 3"
+		counting_DPS(project_3_filename, "Project 3")
+		print "Running counting_DPS for Project 4"
+		counting_DPS(project_4_filename, "Project 4")
+
 elif(debug_mode == 1):
 	# Inside Debug Mode 
 	print "##############"
 	print "# Debug Mode #"
 	print "##############"
-
-	# Getting the files for each of the 4 projects
-	project_1_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 1_print_stmt_list.csv"
-	project_2_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 2_print_stmt_list.csv"
-	project_3_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 3_print_stmt_list.csv"
-	project_4_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 4_print_stmt_list.csv"
-	
-	# Running the 
-	print "Running counting_DPS for Project 1"
-	counting_DPS(project_1_filename)
-	counting_DPS(project_2_filename)
-	counting_DPS(project_3_filename)
-	counting_DPS(project_4_filename)
 	pass
 else:
 	print "Invalid mode!"
