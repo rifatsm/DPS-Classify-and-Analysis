@@ -144,7 +144,7 @@ def classify_dps(print_stmt_list, project_no):
 	# List of DPS values
 	dps_list = []
 
-	print "Iterating over rows of `print_stmt_list`..."
+	print "Iterating over rows of `print_stmt_list`...",
 	# Iterate over rows 
 	for index, row in print_stmt_list.iterrows():
 		dps_value = 1
@@ -161,14 +161,14 @@ def classify_dps(print_stmt_list, project_no):
 			dps_value = 0
 
 		dps_list.append(dps_value)
-
+	print "(Done)"
 	# Converting List into Series in order to add as a new column to the existing dataframe 
 	dps_series = pd.Series(dps_list)
 	# Adding the values of the Series to the new column 
 	print_stmt_list['DPS'] = dps_series.values
 
-	print "Outputting to CSV file..."
-	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/"
+	print "Outputting to CSV file...",
+	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Projectwise all PS/"
 	print_stmt_list.to_csv(output_directory +project_no+ "_print_stmt_list.csv", index=False)
 	print "(Done)"
 	pass
@@ -211,7 +211,7 @@ def counting_DPS(print_stmt_filename, project_no):
 
 	# Output the dataframe to a CSV file 
 	print "Outputting to CSV file...",
-	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/"
+	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project PS Counted/"
 	print_stmt_df.to_csv(output_directory +project_no+ "_ps_counted.csv", index=False)
 	print "(Done)"
 
@@ -242,10 +242,10 @@ step_4 = 0
 step_5 = 0
 
 # Setting values to the steps we want to execute
-# step_1 = 1
-# step_2 = 1
-# step_3 = 1
-# step_4 = 1
+step_1 = 1
+step_2 = 1
+step_3 = 1
+step_4 = 1
 step_5 = 1
 
 #########
@@ -259,9 +259,10 @@ if(debug_mode == 0):
 		print "# Step 1 #"
 		print "##########"
 		# Populating global values
-		print "Populating global values"
+		print "Populating global values ",
 		storing_values_in_global_vars()
 		storing_trivial_print_stmt()
+		print "(Done)"
 
 	if(step_2 == 1):
 		# Step 2
@@ -269,8 +270,9 @@ if(debug_mode == 0):
 		print "# Step 2 #"
 		print "##########"
 		# Reading all the print statements from the CSV file 
-		print "Reading all the print statements from the CSV file"
+		print "Reading all the print statements from the CSV file ",
 		all_print_stmts = read_all_print_stmts(print_stmt_filename)
+		print "(Done)"
 
 	if(step_3 == 1):
 		# Step 3
@@ -279,15 +281,18 @@ if(debug_mode == 0):
 		print "##########"
 		# Reading required output specifications for each of the 4 projects 
 		# Except Project 3, because we do not have any specific required output for Project 3. 
-		print "Gathering project specs for Project 1"
+		print "Gathering project specs for Project 1 ",
 		read_specs(project_spec_1, file_directory_project_1)
-		print "Gathering project specs for Project 2"
+		print "(Done)"
+		print "Gathering project specs for Project 2 ",
 		read_specs(project_spec_2, file_directory_project_2)
+		print "(Done)"
 		# print "Gathering project specs for Project 3"
 		# read_specs(project_spec_3, file_directory_project_3)
-		print "Gathering project specs for Project 4"
+		print "Gathering project specs for Project 4 ",
 		read_specs(project_spec_4, file_directory_project_4)
-
+		print "(Done)"
+		
 	if(step_4 == 1):
 		# Step 4
 		print "##########"
@@ -309,10 +314,11 @@ if(debug_mode == 0):
 		print "# Step 5 #"
 		print "##########"
 		# Getting the files for each of the 4 projects
-		project_1_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 1_print_stmt_list.csv"
-		project_2_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 2_print_stmt_list.csv"
-		project_3_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 3_print_stmt_list.csv"
-		project_4_filename = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 4_print_stmt_list.csv"
+		directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Projectwise all PS/"
+		project_1_filename = directory + "Project 1_print_stmt_list.csv"
+		project_2_filename = directory + "Project 2_print_stmt_list.csv"
+		project_3_filename = directory + "Project 3_print_stmt_list.csv"
+		project_4_filename = directory + "Project 4_print_stmt_list.csv"
 		
 		# Running the 
 		print "Running counting_DPS for Project 1"
