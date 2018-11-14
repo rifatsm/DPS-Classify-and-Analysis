@@ -89,11 +89,11 @@ def storing_trivial_print_stmt():
 
 
 '''
-Description: Function to read all the print statements
+Description: Function to read all the data in the CSV file 
 Params: filename = name of the CSV file with path directory
 Return: Dataframe
 '''
-def read_all_print_stmts(filename):
+def read_all_data(filename):
 	return pd.read_csv(filename)
 
 
@@ -182,7 +182,7 @@ Return: None
 
 def counting_DPS(print_stmt_filename, project_no):
 	print "Reading file: " + print_stmt_filename,
-	print_stmt_list = read_all_print_stmts(print_stmt_filename)
+	print_stmt_list = read_all_data(print_stmt_filename)
 	print " (Done)"
 	unique_project_list = print_stmt_list.userId.unique()
 
@@ -232,10 +232,10 @@ Return: None
 def merging_scores(score_filename, print_stmt_filename, project_no):
 	# Reading files
 	print "Reading file: " + score_filename,
-	score_list = read_all_print_stmts(score_filename)
+	score_list = read_all_data(score_filename)
 	print " (Done)"
 	print "Reading file: " + print_stmt_filename,
-	ps_counted_list = read_all_print_stmts(print_stmt_filename)
+	ps_counted_list = read_all_data(print_stmt_filename)
 	print " (Done)"
 
 	# Filtering scores
@@ -266,7 +266,7 @@ Params: merged_filename = File containing ps count and score merged projects
 Return: None
 '''
 def diving_projects_by_quantile_scores(merged_filename, quantile_directory, project_no):
-	
+
 	pass
 
 
@@ -333,7 +333,7 @@ if(debug_mode == 0):
 		print "##########"
 		# Reading all the print statements from the CSV file 
 		print "Reading all the print statements from the CSV file ",
-		all_print_stmts = read_all_print_stmts(print_stmt_filename)
+		all_print_stmts = read_all_data(print_stmt_filename)
 		print "(Done)"
 
 	if(step_3 == 1):
