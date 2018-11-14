@@ -248,9 +248,27 @@ def merging_scores(score_filename, print_stmt_filename, project_no):
 
 	# Merging score w/ counted ps
 	score_merged = pd.merge(ps_counted_list, score_df, how='left', on='userId')
-	print "score_merged"
-	print score_merged
+	# print "score_merged"
+	# print score_merged
+
+	# Output the dataframe to a CSV file 
+	print "Outputting the merged df to CSV file...",
+	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/PS Counted + Score Merged/"
+	score_merged.to_csv(output_directory +project_no+ "_ps_count_n_score_merged.csv", index=False)
+	print "(Done)"
 	pass
+
+'''
+Description: Dividing score merged projects by quantile scores
+Params: merged_filename = File containing ps count and score merged projects
+		quantile_directory = Directory containing projectwise quantile scores
+		project_no = Project No
+Return: None
+'''
+def diving_projects_by_quantile_scores(merged_filename, quantile_directory, project_no):
+	
+	pass
+
 
 ##############
 # Debug Mode #
@@ -275,14 +293,16 @@ step_3 = 0
 step_4 = 0
 step_5 = 0
 step_6 = 0
+step_7 = 0
 
 # Setting values to the steps we want to execute
 # step_1 = 1
 # step_2 = 1
 # step_3 = 1
 # step_4 = 1
-step_5 = 1
-step_6 = 1
+# step_5 = 1
+# step_6 = 1
+step_7 = 1
 
 #########
 # Steps #
@@ -404,12 +424,46 @@ if(debug_mode == 0):
 		# Calling the merging functions
 		print "Running merging_scores for Project 1"
 		merging_scores(score_filename, project_1_filename, "Project 1")
-		# print "Running merging_scores for Project 2"
-		# merging_scores(score_filename, project_1_filename, "Project 2")
-		# print "Running merging_scores for Project 3"
-		# merging_scores(score_filename, project_1_filename, "Project 3")
-		# print "Running merging_scores for Project 4"
-		# merging_scores(score_filename, project_1_filename, "Project 4")
+		print "Running merging_scores for Project 2"
+		merging_scores(score_filename, project_1_filename, "Project 2")
+		print "Running merging_scores for Project 3"
+		merging_scores(score_filename, project_1_filename, "Project 3")
+		print "Running merging_scores for Project 4"
+		merging_scores(score_filename, project_1_filename, "Project 4")
+
+	if(step_7 == 1):
+		# Step 7
+		'''
+		Description: Dividing scores into Quantile scores
+		'''
+		print "##########"
+		print "# Step 7 #"
+		print "##########"
+
+		# Reading all the PS counted + score merged CSV files
+		directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/PS Counted + Score Merged/"
+		project_1_filename = directory + "Project 1_ps_count_n_score_merged.csv"
+		project_2_filename = directory + "Project 2_ps_count_n_score_merged.csv"
+		project_3_filename = directory + "Project 3_ps_count_n_score_merged.csv"
+		project_4_filename = directory + "Project 4_ps_count_n_score_merged.csv"
+
+		# Directory for projectwise quantile scores
+		quantile_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_R_script/QuantileScoreWise/"
+
+		# Calling function to divide merged projects
+		print "Running `diving_projects_by_quantile_scores` for Project 1"
+		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 1")
+		# print "Running `diving_projects_by_quantile_scores` for Project 2"
+		# diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 2")
+		# print "Running `diving_projects_by_quantile_scores` for Project 3"
+		# diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 3")
+		# print "Running `diving_projects_by_quantile_scores` for Project 4"
+		# diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 4")
+
+
+
+
+
 
 
 elif(debug_mode == 1):
