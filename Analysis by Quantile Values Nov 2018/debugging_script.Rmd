@@ -20,6 +20,9 @@ classified_print_stmts_proj_2 <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify an
 classified_print_stmts_proj_3 <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 3_print_stmt_list.csv")
 classified_print_stmts_proj_4 <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/Project 4_print_stmt_list.csv")
 
+# Projects by quantile scores
+proj_1_q_0_to_25_list <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_R_script/QuantileScoreWise/Project 1/proj_1_q_0_to_25_list.csv")
+
 ```
 
 # Separating the data based on Project no
@@ -65,4 +68,9 @@ cl_proj_1_unique = unique(classified_print_stmts_proj_1$userId)
 cl_proj_2_unique = unique(classified_print_stmts_proj_2$userId)
 cl_proj_3_unique = unique(classified_print_stmts_proj_3$userId)
 cl_proj_4_unique = unique(classified_print_stmts_proj_4$userId)
+```
+
+# Testing the projects by quantile scores
+```{r echo=TRUE}
+
 ```

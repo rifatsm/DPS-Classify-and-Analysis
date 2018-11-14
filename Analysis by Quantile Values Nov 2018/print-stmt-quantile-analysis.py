@@ -5,6 +5,7 @@
 # This Python script is to classify the print statements to DPS and Non-DPS (Step 1-4)
 # This Python script further analyzes the print statements based on the quantile scores (Step 5)
 
+import os
 import pandas as pd
 
 # Reading the CSV file containing all the print statements
@@ -266,6 +267,74 @@ Params: merged_filename = File containing ps count and score merged projects
 Return: None
 '''
 def diving_projects_by_quantile_scores(merged_filename, quantile_directory, project_no):
+	# Reading the files
+	print "Reading file: " + merged_filename,
+	score_data = read_all_data(merged_filename)
+	print " (Done)"
+
+	# Selecting Project directory
+	if(project_no == "Project 1"):
+		quantile_directory = quantile_directory + project_no + "/"
+	if(project_no == "Project 2"):
+		quantile_directory = quantile_directory + project_no + "/"
+	if(project_no == "Project 3"):
+		quantile_directory = quantile_directory + project_no + "/"
+	if(project_no == "Project 4"):
+		quantile_directory = quantile_directory + project_no + "/"
+
+	quantile_files = os.listdir(quantile_directory)
+
+	# print "quantile_files"
+	# print quantile_files
+
+	# Listing projects by quantile scores
+	quantile_score_list = [[],[],[],[]]
+	for file in quantile_files:
+		if "q_0_to_25" in file:
+			quantile_score_list[0] = read_all_data(quantile_directory+file).userName.unique()
+		if "q_25_to_50" in file:
+			quantile_score_list[1] = read_all_data(quantile_directory+file).userName.unique()
+		if "q_50_to_75" in file:
+			quantile_score_list[2] = read_all_data(quantile_directory+file).userName.unique()
+		if "q_75_to_100" in file:
+			quantile_score_list[3] = read_all_data(quantile_directory+file).userName.unique()
+
+
+	# Printing the list 
+	# for _list in quantile_score_list:
+	# 	print "_list " + str(len(_list))
+	# 	print _list
+
+	# Creating dataframe for each of the quantile scores
+	quantile_1 = pd.DataFrame()
+	quantile_2 = pd.DataFrame()
+	quantile_3 = pd.DataFrame()
+	quantile_4 = pd.DataFrame()
+
+	quantile_1['userId'] = quantile_score_list[0]
+	quantile_1['Quantile'] = "1"
+
+	quantile_2['userId'] = quantile_score_list[1]
+	quantile_2['Quantile'] = "2"
+
+	quantile_3['userId'] = quantile_score_list[2]
+	quantile_3['Quantile'] = "3"
+
+	quantile_4['userId'] = quantile_score_list[3]
+	quantile_4['Quantile'] = "4"
+
+	# Join 4 dataframes into one dataframe 
+	dataframes = [quantile_1, quantile_2, quantile_3, quantile_4]
+	quantile_df = pd.concat(dataframes)
+
+	# Merging the quantile type to the ps + score data
+	score_data = pd.merge(score_data, quantile_df, how='left', on='userId')
+
+	# Output the dataframe to a CSV file 
+	print "Outputting the merged df to CSV file...",
+	output_directory = "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/PS Count + Score + Quantile Merged/"
+	score_data.to_csv(output_directory +project_no+ "_ps_count_n_score_n_quantile_merged.csv", index=False)
+	print "(Done)"
 
 	pass
 
@@ -453,12 +522,12 @@ if(debug_mode == 0):
 		# Calling function to divide merged projects
 		print "Running `diving_projects_by_quantile_scores` for Project 1"
 		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 1")
-		# print "Running `diving_projects_by_quantile_scores` for Project 2"
-		# diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 2")
-		# print "Running `diving_projects_by_quantile_scores` for Project 3"
-		# diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 3")
-		# print "Running `diving_projects_by_quantile_scores` for Project 4"
-		# diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 4")
+		print "Running `diving_projects_by_quantile_scores` for Project 2"
+		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 2")
+		print "Running `diving_projects_by_quantile_scores` for Project 3"
+		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 3")
+		print "Running `diving_projects_by_quantile_scores` for Project 4"
+		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 4")
 
 
 
