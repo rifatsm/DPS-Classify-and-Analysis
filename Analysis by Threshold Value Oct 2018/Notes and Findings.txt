@@ -1,0 +1,124 @@
+#########
+# Tasks #
+#########
+
+ - (done) Do a hypothesis testing for projects of high score vs low score and see if there is sufficient evidence that students getting high scores uses less number of DPS than students getting low scores
+	- Group by `userId` and `CASSIGNEMNTNAME` to get the sum of DPS for each group 
+	- Calculate the mean, std
+	- Do the two sample t-test 
+ = The finding for it is in the file named: `Findings of the Hypothesis Testing.txt`
+
+Meeting Notes: 
+- Cluster analysis 
+- eyeballing the histogram 
+- 95% mean
+- 92$ median (check)
+- why two groups? why not 3 or 4 groups of scores? 
+	- Methodology: Erik's paper, Mohammad's paper 
+- consider both continuous and discreet analysis 
+- [issue] more commits might increase count in duplicate DPS 
+
+More works:
+ - (done) Get precise Line numbers
+ 	- Our current code contains ways of measuring precise line numbers
+ 	- [Issue] However, the data we have about print statements contain faulty values 
+ 	- We need to check if the data was generated after the changes to the code was made or not 
+ - get scores in the DPS count sample dataset
+
+ - The student (`tonaid`) using maximum count of DPS in Project 2 in high scoring sample, got 95.99% of the score. 
+ - data/fall-2016/web-cat-students-with-sensordata.csv is the file containing submission data in the Web-CAT.
+ - The student (`davidja`) using maximum count of DPS in Project 2 in low scoring sample, got % of the score. 
+
+ - [Issue] (solved) We have some issues in the `consolidated.csv` file that we had been using. 
+ - (done) I will run the `load_submission_data` function with the input `web-cat-all.csv` to get the output dataframe which has the final submission score
+ 	- output file named: `web-cat-all_output_submission_data.csv`
+ - [Issue] (solved) The student `admico77` did NOT use sensor-data plugin, hence, there is no data for the student in the `web-cat-all_output_submission_data.csv`
+
+####################
+# November 7, 2018 #
+####################
+
+ - We have the final submission scores for all the projects of CS 3114 Fall '16 in `web-cat-all_output_submission_data.csv` file 
+ - (done) Create a R script to calculate the quantiles `print-stmt-quantile-analysis.Rmd`
+### Quantiles
+ - For each projects, find the score quantiles
+ 	- Project 1: 
+ 	       0%       25%       50%       75%      100% 
+	0.0000000 0.7197877 0.8968067 0.9866198 1.0000000 
+ 	- Project 2:
+ 	       0%       25%       50%       75%      100% 
+	0.0000000 0.3537458 0.7590576 0.9804791 1.0000000 
+ 	- Project 3: 
+	        0%       25%       50%       75%      100% 
+	0.0000000 0.8992944 0.9957080 1.0000000 1.0000000 
+ 	- Project 4: 
+ 	       0%       25%       50%       75%      100% 
+	0.0000000 0.6392653 0.8342990 0.9555822 1.0000000 
+	- Overall Score Quantile:
+	       0%       25%       50%       75%      100% 
+	0.0000000 0.6783328 0.9061537 0.9941928 1.0000000 
+
+ - (done) Separated the students projects based on score quantiles 
+ 	- Separate CSV files generated based on the above criterion
+
+################################### 
+# Quantile Analysis Python Script # 
+###################################
+
+ - Create a Python script `print-stmt-quantile-analysis.py`
+ 	- (done) Group the data for each project type 
+ 	- (done) Classify DPS or Non-DPS type 
+ 	- Further group them on quantile type 
+ 		- Write another Python script
+ 		- Read the quantilewise projects 
+ 		- Drop the unnecessary columns 
+ 		- (done) Count all the DPS for each project
+ 		- (done) Add two new columns to the quantilewise project with DPS counts and Non-DPS counts 
+ 	- (done) Compare the score vs DPS count 
+ 	- Find any behavior to get higher scores
+ 
+ - [Issue] (solved) I am getting same line no for different print statements on the same time in same commits 
+ 	- We need to further check the accuracy of the line numbers :(
+ 	- Debug the Repodriller code to find any inconsistancy with the line numbers
+ 	= The code is correct 
+ 		- However, the generated print statements are faulty
+ 		- We need to run the code again on the entire dataset
+ 		- I am going to run the `sensordata-repo-mining` JAVA code on the desktop myself 
+ 	- I set up the desktop for the `sensordata-repo-mining` code
+ 	- I used the repodriller (branch `sigcse-2019`)
+ 	- I set the git.diffcontext (`-Dgit.diffcontext=0` in Run Configuration->(x)= Arguments->VM arguments) for repodriller. 
+ 		- This is to consider only the git.diff and no other neighboring diffs
+ 		- If we do not set it, we will get every (lineNo-3), because by default the git.diffcontext is set to 3
+
+ - Create another Python script 
+ 	- Use Linear Mixed Model on the the score to get a threshold score
+
+####################
+# November 9, 2018 #
+####################
+
+	- Print statments with precise line no generated 
+	- Stored in the location:
+		- "/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Nov 09, 2018/print-stmts.csv"
+
+
+#####################
+# November 13, 2018 #
+#####################
+
+	- (done) The Python script `print-stmt-quantile-analysis.py` is run with the newly generated print statements
+	- (done) All the print statements are now grouped by Project name 
+	- (done) The projectwise print statements are classified into DPS and Non-DPS
+	
+	- See `Quantile Analysis Python Script` section above. Solve all the steps 
+
+
+##################	
+# = Findings: #
+##################
+
+	- Influence of DPS on Score (ANOVA using JMP)
+		- Project 1: p-value 0.0347 (significant)
+		- Project 2: p-value 0.2618 (insignificant)
+		- Project 3: p-value 0.8568 (insignificant)
+		- Project 4: p-value 0.2637 (insignificant)

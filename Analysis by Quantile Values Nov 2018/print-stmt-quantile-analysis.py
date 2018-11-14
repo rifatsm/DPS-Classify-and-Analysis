@@ -530,11 +530,6 @@ if(debug_mode == 0):
 		diving_projects_by_quantile_scores(project_4_filename, quantile_directory, "Project 4")
 
 
-
-
-
-
-
 elif(debug_mode == 1):
 	# Inside Debug Mode 
 	print "##############"
