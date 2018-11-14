@@ -523,11 +523,11 @@ if(debug_mode == 0):
 		print "Running `diving_projects_by_quantile_scores` for Project 1"
 		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 1")
 		print "Running `diving_projects_by_quantile_scores` for Project 2"
-		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 2")
+		diving_projects_by_quantile_scores(project_2_filename, quantile_directory, "Project 2")
 		print "Running `diving_projects_by_quantile_scores` for Project 3"
-		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 3")
+		diving_projects_by_quantile_scores(project_3_filename, quantile_directory, "Project 3")
 		print "Running `diving_projects_by_quantile_scores` for Project 4"
-		diving_projects_by_quantile_scores(project_1_filename, quantile_directory, "Project 4")
+		diving_projects_by_quantile_scores(project_4_filename, quantile_directory, "Project 4")
 
 
 
