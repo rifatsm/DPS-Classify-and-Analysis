@@ -370,7 +370,7 @@ step_7 = 0
 # step_3 = 1
 # step_4 = 1
 # step_5 = 1
-# step_6 = 1
+step_6 = 1
 step_7 = 1
 
 #########
@@ -494,11 +494,11 @@ if(debug_mode == 0):
 		print "Running merging_scores for Project 1"
 		merging_scores(score_filename, project_1_filename, "Project 1")
 		print "Running merging_scores for Project 2"
-		merging_scores(score_filename, project_1_filename, "Project 2")
+		merging_scores(score_filename, project_2_filename, "Project 2")
 		print "Running merging_scores for Project 3"
-		merging_scores(score_filename, project_1_filename, "Project 3")
+		merging_scores(score_filename, project_3_filename, "Project 3")
 		print "Running merging_scores for Project 4"
-		merging_scores(score_filename, project_1_filename, "Project 4")
+		merging_scores(score_filename, project_4_filename, "Project 4")
 
 	if(step_7 == 1):
 		# Step 7
