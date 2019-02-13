@@ -7,7 +7,7 @@ library(bit64)
 library(plyr)
 
 # Reading `print-stmt.csv` file into datatable
-print_stmt <- fread("/Summer 2018/Dr. Cliff Shaffer's Lab/DSP vs Launch Times Analysis/print-stmt.csv")
+print_stmt <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/print-stmt all versions/Nov 09, 2018/print-stmts.csv")
 ```
 
 # List of random `userId`s: [1st Iteration] 100 136 107 124 155  92  85  43 118  16   1  73
