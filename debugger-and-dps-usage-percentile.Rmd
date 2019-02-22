@@ -1,0 +1,71 @@
+```{r echo=TRUE}
+library(data.table)
+library(dplyr)
+library(bit64)
+
+project_scores <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/web-cat-all_output_submission_data.csv")
+
+project_1_scores_n_dps_count <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/PS Counted + Score Merged/Project 1_ps_count_n_score_merged.csv")
+
+project_2_scores_n_dps_count <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/PS Counted + Score Merged/Project 2_ps_count_n_score_merged.csv")
+
+
+project_3_scores_n_dps_count <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/PS Counted + Score Merged/Project 3_ps_count_n_score_merged.csv")
+
+project_4_scores_n_dps_count <- fread("/Dr. Cliff Shaffer's Lab/DPS Classify and Analysis Oct, 2018/Analysis by Quantile Values Nov 2018/From_Python_script/PS Counted + Score Merged/Project 4_ps_count_n_score_merged.csv")
+
+
+uuids <- fread("/Dr. Cliff Shaffer's Lab/Sensor Data Fall 2016 URL parsing/Mapping of Student Uuids and Project Uuids/uuids.csv")
+
+
+```
+
+Counting the DPS users in different projects
+
+```{r echo=TRUE}
+
+# Getting only DPS users (at least one DPS is present)
+
+proj_1_dps_users <- filter(project_1_scores_n_dps_count, `DPS count` > 0)
+
+proj_2_dps_users <- filter(project_2_scores_n_dps_count, `DPS count` > 0)
+
+proj_3_dps_users <- filter(project_3_scores_n_dps_count, `DPS count` > 0)
+
+proj_4_dps_users <- filter(project_4_scores_n_dps_count, `DPS count` > 0)
+
+# Calculating Percentile
+
+proj_1_percentile <- (nrow(proj_1_dps_users)*100)/nrow(project_1_scores_n_dps_count)
+
+
+proj_2_percentile <- (nrow(proj_2_dps_users)*100)/nrow(project_2_scores_n_dps_count)
+
+
+proj_3_percentile <- (nrow(proj_3_dps_users)*100)/nrow(project_3_scores_n_dps_count)
+
+
+proj_4_percentile <- (nrow(proj_4_dps_users)*100)/nrow(project_4_scores_n_dps_count)
+
+total_projects <- (nrow(project_1_scores_n_dps_count)+nrow(project_2_scores_n_dps_count)+nrow(project_3_scores_n_dps_count)+nrow(project_4_scores_n_dps_count))
+
+total_dps <- (nrow(proj_1_dps_users)+nrow(proj_2_dps_users)+nrow(proj_3_dps_users)+nrow(proj_4_dps_users))
+
+
+total_percentile <- (total_dps*100)/total_projects
+
+```
+
+**Project 1** DPS percentile 94.95%
+
+**Project 2** DPS percentile 92.24%
+
+**Project 3** DPS percentile 76.58%
+
+**Project 4** DPS percentile 85.57%
+
+**Total Percentage** 87.21%
+
+```{r echo=TRUE}
+
+```
